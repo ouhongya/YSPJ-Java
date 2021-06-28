@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysmenuMapper">
+
+
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into sys_menu(
+			menu_id,
+			menu_name,
+			menu_url,
+			parent_id,
+			menu_icon,
+			direty,
+			`delete`,
+			updatetime
+		) values (
+			#{menu_id},
+			#{menu_name},
+			#{menu_url},
+			#{parent_id},
+			#{menu_icon},
+			#{direty},
+			#{delete},
+			#{updatetime}
+		)
+	</insert>
+
+
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from SYS_MENU
+		where
+			SYSMENU_ID = #{SYSMENU_ID}
+	</delete>
+
+
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update  sys_menu
+			set
+				menu_id = #{menu_id},
+				menu_name = #{menu_name},
+				menu_url = #{menu_url},
+				parent_id = #{parent_id},
+				menu_icon = #{menu_icon},
+				direty = #{direty},
+				`delete` = #{delete},
+				updatetime = #{updatetime}
+			where
+				menu_id = #{menu_id}
+	</update>
+
+
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select
+			menu_id,
+			menu_name,
+			menu_url,
+			parent_id,
+			menu_icon,
+			direty,
+			`delete`,
+			updatetime
+		from
+			sys_menu
+		where
+			menu_id = #{menu_id}
+	</select>
+
+
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+				a.MENU_ID,
+				a.MENU_NAME,
+				a.MENU_URL,
+				a.PARENT_ID,
+				a.MENU_ICON,
+				a.DIRETY,
+				a.`delete`,
+				a.UPDATETIME,
+				a.SYSMENU_ID
+		from
+				SYS_MENU a
+	</select>
+
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+				a.menu_id,
+				a.menu_name,
+				a.menu_url,
+				a.parent_id,
+				a.menu_icon,
+				a.direty,
+				a.`delete`,
+				a.updatetime
+		from
+				sys_menu a
+		where
+		      a.updatetime + 0 &gt; #{updatetime} + 0
+
+	</select>
+
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from SYS_MENU
+		where
+			SYSMENU_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+</mapper>

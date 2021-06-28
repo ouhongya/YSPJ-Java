@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/sysmenu" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/sysmenutable" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/sysrole" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/sysunit" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/sysuser" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbexcelcategory" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbexceluser" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbexecel" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbgroupreport" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbmessage" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbmessageuser" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbnorm" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbnormdetail" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbnormdetailrow" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbtask" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbtaskdeletestatus" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbtaskdetail" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbtaskdetailcheckrow" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbtaskdetailnorm" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbtaskdetailnormdetail" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/service/app/tbtaskinfo" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/fh/util/GetPinyin.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/SysmenuMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/SysmenutableMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/SysroleMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/SysunitMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/SysuserMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbexcelcategoryMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbexceluserMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbexecelMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbgroupreportMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbmessageMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbmessageuserMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbnormMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbnormdetailMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbnormdetailrowMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbtaskMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbtaskdeletestatusMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbtaskdetailMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbtaskdetailcheckrowMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbtaskdetailnormMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbtaskdetailnormdetailMapper.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mybatis/app/TbtaskinfoMapper.xml" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,311 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<?mso-application progid='Excel.Sheet'?>
+<Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet' xmlns:o='urn:schemas-microsoft-com:office:office'
+          xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'
+          xmlns:html='http://www.w3.org/TR/REC-html40' xmlns:dt='uuid:C2F41010-65B3-11d1-A29F-00AA00C14882'>
+    <DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'>
+        <Author>成都积盛电子科技有限公司</Author>
+        <LastAuthor>成都积盛电子科技有限公司</LastAuthor>
+        <Created>2015-06-05T18:19:00Z</Created>
+        <LastSaved>2021-06-25T08:16:50Z</LastSaved>
+    </DocumentProperties>
+    <CustomDocumentProperties xmlns='urn:schemas-microsoft-com:office:office'>
+        <KSOProductBuildVer dt:dt='string'>2052-11.8.2.9067</KSOProductBuildVer>
+    </CustomDocumentProperties>
+    <ExcelWorkbook xmlns='urn:schemas-microsoft-com:office:excel'>
+        <WindowWidth>28245</WindowWidth>
+        <WindowHeight>11880</WindowHeight>
+        <ProtectStructure>False</ProtectStructure>
+        <ProtectWindows>False</ProtectWindows>
+    </ExcelWorkbook>
+    <Styles>
+        <Style ss:ID='Default' ss:Name='Normal'>
+            <Alignment ss:Vertical='Bottom'/>
+            <Borders/>
+            <Font ss:FontName='等线' x:CharSet='134' ss:Size='11' ss:Color='#000000'/>
+            <Interior/>
+            <NumberFormat/>
+            <Protection/>
+        </Style>
+        <Style ss:ID='s49'/>
+        <Style ss:ID='s50'>
+            <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>
+            <Borders>
+                <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>
+            </Borders>
+            <Font ss:FontName='微软雅黑 Light' x:CharSet='134' ss:Size='20' ss:Color='#000000' ss:Bold='1'/>
+        </Style>
+        <Style ss:ID='s51'>
+            <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>
+            <Borders>
+                <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>
+            </Borders>
+            <Font ss:FontName='微软雅黑 Light' x:CharSet='134' ss:Size='18' ss:Color='#000000'/>
+        </Style>
+        <Style ss:ID='s52'>
+            <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>
+            <Borders>
+                <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>
+            </Borders>
+            <Font ss:FontName='微软雅黑 Light' x:CharSet='134' ss:Size='18' ss:Color='#000000'/>
+        </Style>
+        <Style ss:ID='s53'>
+            <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>
+            <Borders>
+                <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>
+            </Borders>
+            <Font ss:FontName='微软雅黑 Light' x:CharSet='134' ss:Size='18' ss:Color='#000000'/>
+        </Style>
+        <Style ss:ID='s54'>
+            <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>
+            <Borders>
+                <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>
+            </Borders>
+            <Font ss:FontName='微软雅黑 Light' x:CharSet='134' ss:Size='18' ss:Color='#000000'/>
+        </Style>
+        <Style ss:ID='s55'>
+            <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>
+            <Borders>
+                <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>
+            </Borders>
+            <Font ss:FontName='微软雅黑 Light' x:CharSet='134' ss:Size='18' ss:Color='#000000'/>
+        </Style>
+        <Style ss:ID='s56'>
+            <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>
+            <Borders>
+                <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>
+                <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>
+            </Borders>
+            <Font ss:FontName='微软雅黑 Light' x:CharSet='134' ss:Size='18' ss:Color='#000000'/>
+        </Style>
+    </Styles>
+    <Worksheet ss:Name='成都积盛电子月度考试'>
+        <Table ss:ExpandedColumnCount='16383' ss:ExpandedRowCount='5' x:FullColumns='1' x:FullRows='1'
+               ss:DefaultColumnWidth='126' ss:DefaultRowHeight='65'>
+            <Column ss:Index='1' ss:StyleID='Default' ss:AutoFitWidth='0' ss:Width='291.35'/>
+            <Column ss:Index='2' ss:StyleID='Default' ss:AutoFitWidth='0' ss:Width='266.5'/>
+            <Column ss:StyleID='Default' ss:AutoFitWidth='0' ss:Width='243.4' ss:Span='1'/>
+            <Column ss:Index='5' ss:StyleID='Default' ss:AutoFitWidth='0' ss:Width='129.6' ss:Span='1'/>
+            <Column ss:Index='7' ss:StyleID='Default' ss:AutoFitWidth='0' ss:Width='122' ss:Span='4'/>
+            <Column ss:Index='12' ss:StyleID='Default' ss:AutoFitWidth='0' ss:Width='243.4'/>
+            <Column ss:StyleID='Default' ss:AutoFitWidth='0' ss:Width='222.25'/>
+            <Column ss:StyleID='Default' ss:AutoFitWidth='0' ss:Width='136.6'/>
+            <Row>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>考试名称</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>题库</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>考试开始时间</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>考试截止时间</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>考号</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>考生姓名</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>得分</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>及格线</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>总分</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>是否合格</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>考试次数</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>考试时间</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>历史成绩</Data>
+                </Cell>
+                <Cell ss:StyleID='s50'>
+                    <Data ss:Type='String'>状态</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>成都积盛电子月度考试</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>语文，数学，数学，数学，数学</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>10021</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>王德发</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>99</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>100</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>150</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>不合格</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>2</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>78,89</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>已完成</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>成都积盛电子月度考试</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>语文，数学，数学，数学，数学</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>10021</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>李狗蛋</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>99</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>100</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>150</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>不合格</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>1</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>78,89,25,56</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>待重考</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>成都积盛电子月度考试</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>语文，数学，数学，数学，数学</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>10021</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>李狗蛋</Data>
+                </Cell>
+                <Cell ss:StyleID='s55' ss:MergeAcross='7'>
+                    <Data ss:Type='String'>未开始</Data>
+                </Cell>
+            </Row>
+            <Row>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>成都积盛电子月度考试</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>语文，数学，数学，数学，数学</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>2021年6月24日17:49:29</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='Number'>10021</Data>
+                </Cell>
+                <Cell ss:StyleID='s51'>
+                    <Data ss:Type='String'>李狗蛋</Data>
+                </Cell>
+                <Cell ss:StyleID='s56' ss:MergeAcross='7'>
+                    <Data ss:Type='String'>进行中</Data>
+                </Cell>
+            </Row>
+        </Table>
+        <WorksheetOptions xmlns='urn:schemas-microsoft-com:office:excel'>
+            <PageSetup>
+                <Header x:Margin='0.3'/>
+                <Footer x:Margin='0.3'/>
+                <PageMargins x:Left='0.7' x:Right='0.7' x:Top='0.75' x:Bottom='0.75'/>
+            </PageSetup>
+            <Zoom>54</Zoom>
+            <Selected/>
+            <TopRowVisible>0</TopRowVisible>
+            <LeftColumnVisible>0</LeftColumnVisible>
+            <PageBreakZoom>100</PageBreakZoom>
+            <Panes>
+                <Pane>
+                    <Number>3</Number>
+                    <ActiveRow>0</ActiveRow>
+                    <ActiveCol>2</ActiveCol>
+                    <RangeSelection>R1C3</RangeSelection>
+                </Pane>
+            </Panes>
+            <ProtectObjects>False</ProtectObjects>
+            <ProtectScenarios>False</ProtectScenarios>
+        </WorksheetOptions>
+    </Worksheet>
+</Workbook>

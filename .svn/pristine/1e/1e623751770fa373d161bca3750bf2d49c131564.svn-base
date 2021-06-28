@@ -1,0 +1,378 @@
+package com.fh.service.app;
+
+import com.alibaba.excel.util.StringUtils;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.fh.dao.DaoSupport;
+import com.fh.entity.app.PageVo;
+import com.fh.entity.app.*;
+import com.fh.util.PageData;
+import com.fh.util.UuidUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.*;
+
+
+@Service("ExamService")
+public class ExamService {
+
+
+    @Resource(name = "daoSupport")
+    private DaoSupport dao;
+
+    /**
+     * 查询题库列表
+     *
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public PageInfo queryQuestionBankList(PageData pageData) throws Exception {
+        List<PageData> QuestionBankList = null;
+        PageVo pageVo = new PageVo();
+        pageVo.setPage(pageData.get("page").toString());
+        pageVo.setSize(pageData.get("size").toString());
+        pageVo.setUid(pageData.get("uid").toString());
+        pageVo.setIds(new ArrayList<String>(new TreeSet<String>(Arrays.asList(pageData.get("ids").toString().split(",")))));
+        pageVo.setCompanyId(pageData.get("companyId").toString());
+        if (!StringUtils.isEmpty(pageData.get("ids").toString())) {
+            PageHelper.startPage(Integer.parseInt(pageVo.getPage()), 99999999);
+            QuestionBankList = (List<PageData>) dao.findForList("ExamMapper.queryQuestionBankListByCategory", pageVo);
+            //拉取下面的子项
+            for (PageData data : QuestionBankList) {
+                pageData.put("id", data.getString("id"));
+                PageData dataVo = queryBankDetail(pageData);
+                List<PageData> lisst = new ArrayList<>();
+                List<PageData> list1 = (List<PageData>) dataVo.get("bankList");
+                List<PageData> list2 = (List<PageData>) dataVo.get("oneList");
+                Integer count = 0;
+                for (PageData pageData1 : list1) {
+                    Long radio = (Long) pageData1.get("radio");
+                    Long checkbox = (Long) pageData1.get("checkbox");
+                    Long judge = (Long) pageData1.get("judge");
+                    count += radio.intValue();
+                    count += checkbox.intValue();
+                    count += judge.intValue();
+                }
+                PageData pd = new PageData();
+                pd.put("name", "批量录入 " + "(" + count + ")");
+                pd.put("type", 1);
+                pd.put("count", count);
+                pd.put("list", list1);
+                List<PageData> dataList = new ArrayList<>();
+                for (PageData pageData1 : list2) {
+                    String typename = "";
+                    Integer type = (Integer) pageData1.get("type");
+                    if (type==1) {
+                        typename = "单选题";
+                    } else if (type==2) {
+                        typename = "多选题";
+                    } else {
+                        typename = "判断题";
+                    }
+                    PageData data1 = new PageData();
+                    data1.put("id", pageData1.get("id"));
+                    data1.put("title", pageData1.get("stem"));
+                    data1.put("created_time", pageData1.get("created_time"));
+                    data1.put("typename", typename);
+                    data1.put("name", pageData1.get("name"));
+                    data1.put("isFlag", pageData1.get("isFlag"));
+                    dataList.add(data1);
+                }
+                PageData pageData1 = new PageData();
+                pageData1.put("name", "单个录入 " + "(" + dataList.size() + ")");
+                pageData1.put("type", 2);
+                pageData1.put("count", dataList.size());
+                pageData1.put("list", dataList);
+                lisst.add(pd);
+                lisst.add(pageData1);
+                data.put("listpart", lisst);
+            }
+        } else {
+            PageHelper.startPage(Integer.parseInt(pageVo.getPage()), Integer.parseInt(pageVo.getSize()));
+            QuestionBankList = (List<PageData>) dao.findForList("ExamMapper.queryQuestionBankList", pageVo);
+        }
+        return new PageInfo(QuestionBankList);
+    }
+
+    /**
+     * 查询题库列表不分页
+     *
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public List<PageData> queryQuestionBankListNotLimit(PageData pageData) throws Exception {
+        return (List<PageData>) dao.findForList("ExamMapper.queryQuestionBankListNotLimit", pageData);
+    }
+
+    /**
+     * 添加题库
+     *
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public String addQuestionBank(PageData pageData) throws Exception {
+        List<PageData> pd = (List<PageData>) dao.findForList("ExamMapper.queryQuestionBankOneRemark", pageData);
+        if (pd.size()!=0) {
+            List<String> listName = new ArrayList<>();
+            for (PageData data : pd) {
+                listName.add(data.getString("name"));
+            }
+            if (listName.contains(pageData.getString("name"))) {
+                return "WARNING";
+            }
+            pageData.put("is_default", 0);
+        }else{
+            pageData.put("is_default", 1);
+        }
+        pageData.put("id", UuidUtil.get32UUID());
+        pageData.put("name", pageData.getString("name"));
+        pageData.put("status", 0);
+        pageData.put("company_id", pageData.getString("companyId"));
+        pageData.put("user_id", pageData.getString("uid"));
+        pageData.put("created_time", new Date());
+        pageData.put("last_update_time", new Date());
+        dao.save("ExamMapper.addQuestionBank", pageData);
+        return "SUCCESS";
+    }
+
+    /**
+     * 删除题库
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public String deleteQuestionBank(PageData pageData) throws Exception {
+        //删除题库
+        dao.update("ExamMapper.deleteQuestionBank", pageData);
+        //删除题
+        dao.update("ExamMapper.deleteQuestionBankByExamTopic", pageData);
+        return "SUCCESS";
+    }
+
+    /**
+     * 停用/启用/默认题库
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public String statusQuestionBank(PageData pageData) throws Exception {
+        String status =  pageData.getString("status");
+        if (status.equals("666")) {
+            dao.update("ExamMapper.statusQuestionBankByDefault", pageData);
+            dao.update("ExamMapper.statusQuestionBankByDefaultOnt", pageData);
+        }else{
+            dao.update("ExamMapper.statusQuestionBank", pageData);
+            dao.update("ExamMapper.statusQuestionBankByTopic", pageData);
+        }
+        return "SUCCESS";
+    }
+
+    /**
+     * 重命名题库
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public String remarkQuestionBank(PageData pageData) throws Exception {
+        List<PageData> pd = (List<PageData>) dao.findForList("ExamMapper.queryQuestionBankOneRemark", pageData);
+        if (pd.size()!=0) {
+            List<String> listName = new ArrayList<>();
+            for (PageData data : pd) {
+                listName.add(data.getString("name"));
+            }
+            if (listName.contains(pageData.getString("name"))) {
+                return "WARNING";
+            }
+        }
+        dao.update("ExamMapper.remarkQuestionBank", pageData);
+        return "SUCCESS";
+    }
+
+    /**
+     * 添加试题
+     *
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public String addOneTopic(PageData pageData) throws Exception {
+        List<TopicVo> topic = new ArrayList<>();
+        JSONArray jsonArray = JSONArray.parseArray(pageData.getString("topic"));
+        for (Object jsonObject : jsonArray) {
+            TopicVo topicVo = JSONObject.parseObject(jsonObject.toString(), TopicVo.class);
+            topic.add(topicVo);
+        }
+        List<AnswerVo> answer = new ArrayList<>();
+        JSONArray jsonArrayByAnswer = JSONArray.parseArray(pageData.getString("topicByAnswer"));
+        for (Object jsonObject : jsonArrayByAnswer) {
+            AnswerVo answerVo = JSONObject.parseObject(jsonObject.toString(), AnswerVo.class);
+            answer.add(answerVo);
+        }
+        //判断是否有题重复
+        List<String> stemNameList = (List<String>) dao.findForList("ExamMapper.queryStemNameList", pageData.get("companyId"));
+        String repeatStem = "";
+        Integer index = 0;
+        for (TopicVo topicVo : topic) {
+            index += 1;
+            if (stemNameList.contains(topicVo.getStem())) {
+                repeatStem += index + ",";
+            }
+        }
+        if (!StringUtils.isEmpty(repeatStem)) {
+            return repeatStem;
+        }
+        dao.batchSave("ExamMapper.addOneTopic", topic);
+        dao.batchSave("ExamMapper.addOneTopicByAnswer", answer);
+        return "SUCCESS";
+    }
+
+    /**
+     * 编辑试题
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public String editOneTopic(PageData pageData) throws Exception {
+        TopicVo topicVo = null;
+        JSONArray jsonArray = JSONArray.parseArray(pageData.getString("stem"));
+        for (Object jsonObject : jsonArray) {
+            topicVo = JSONObject.parseObject(jsonObject.toString(), TopicVo.class);
+        }
+        List<Answer> answer = new ArrayList<>();
+        JSONArray jsonArrayByAnswer = JSONArray.parseArray(pageData.getString("answer"));
+        for (Object jsonObject : jsonArrayByAnswer) {
+            Answer answerVo = JSONObject.parseObject(jsonObject.toString(), Answer.class);
+            answer.add(answerVo);
+        }
+        //判断是否有题重复
+        String stemName = (String) dao.findForObject("ExamMapper.queryExamName", topicVo.getId());
+        if(!stemName.equals(topicVo.getStem())){
+            List<String> stemNameList = (List<String>) dao.findForList("ExamMapper.queryStemNameList", pageData.get("companyId"));
+            if (stemNameList.contains(topicVo.getStem())) {
+                return "WARNING";
+            }
+        }
+        dao.update("ExamMapper.updateOneStem", topicVo);
+        dao.batchUpdate("ExamMapper.updateOneTopicByAnswer", answer);
+        return "SUCCESS";
+    }
+
+    /**
+     * 查询试题
+     *
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public Topic queryOneTopic(PageData pageData) throws Exception {
+        Topic stem = (Topic) dao.findForObject("ExamMapper.queryOneTopic", pageData.get("id"));
+        return stem;
+    }
+
+    /**
+     * 批量添加试题
+     *
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public String addBatckTopic(PageData pageData) throws Exception {
+        try {
+            List<TopicVo> topic = new ArrayList<>();
+            JSONArray jsonArray = JSONArray.parseArray(pageData.getString("topic"));
+            for (Object jsonObject : jsonArray) {
+                TopicVo topicVo = JSONObject.parseObject(jsonObject.toString(), TopicVo.class);
+                topic.add(topicVo);
+            }
+            List<AnswerVo> answer = new ArrayList<>();
+            JSONArray jsonArrayByAnswer = JSONArray.parseArray(pageData.getString("topicByAnswer"));
+            for (Object jsonObject : jsonArrayByAnswer) {
+                AnswerVo answerVo = JSONObject.parseObject(jsonObject.toString(), AnswerVo.class);
+                answer.add(answerVo);
+            }
+            List<BatckVo> batck = new ArrayList<>();
+            JSONArray jsonArrayByBatck = JSONArray.parseArray(pageData.getString("excel"));
+            for (Object jsonObject : jsonArrayByBatck) {
+                BatckVo batckVo = JSONObject.parseObject(jsonObject.toString(), BatckVo.class);
+                batck.add(batckVo);
+            }
+            dao.batchSave("ExamMapper.addBatckTopic", batck);
+            dao.batchSave("ExamMapper.addOneTopic", topic);
+            dao.batchSave("ExamMapper.addOneTopicByAnswer", answer);
+            return "SUCCESS";
+        } catch (Exception e) {
+            return "ERROR";
+        }
+    }
+
+    /**
+     * 查询题库详情
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public PageData queryBankDetail(PageData pageData) throws Exception {
+        List<PageData> bankList = (List<PageData>) dao.findForList("ExamMapper.queryBankDetail", pageData);
+
+        for (PageData data : bankList) {
+            PageData pd = new PageData();
+            pd.put("bankId", data.getString("id"));
+            pd.put("categoryId", pageData.getString("id"));
+            List<PageData> list = (List<PageData>) dao.findForList("ExamMapper.queryExcelCount", pd);
+            if (list != null) {
+                for (PageData pageData1 : list) {
+                    switch (pageData1.getString("type")) {
+                        case "radio":
+                            data.put("radio", pageData1.get("value"));
+                            break;
+                        case "checkbox":
+                            data.put("checkbox", pageData1.get("value"));
+                            break;
+                        case "judge":
+                            data.put("judge", pageData1.get("value"));
+                            break;
+                    }
+                }
+            }
+        }
+        List<PageData> oneList = (List<PageData>) dao.findForList("ExamMapper.queryBankOneList", pageData);
+        PageData pd = new PageData();
+        pd.put("bankList", bankList);
+        pd.put("oneList", oneList);
+        return pd;
+    }
+
+
+    /**
+     * 题库Excel停用/启用/删除
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public String updateExcelStatus(PageData pageData) throws Exception {
+        String status = pageData.getString("status");
+        dao.update("ExamMapper.updateExcelStatus", pageData);
+        if(status.equals("0")){
+            pageData.put("id",pageData.getString("categoryId"));
+            dao.update("ExamMapper.statusQuestionBank", pageData);
+        }
+        return "SUCCESS";
+    }
+
+    /**
+     * 单题停用/启用/删除
+     * @param pageData
+     * @return
+     * @throws Exception
+     */
+    public String updateOneTopicStatus(PageData pageData) throws Exception {
+        dao.update("ExamMapper.updateOneTopicStatus", pageData);
+        return "SUCCESS";
+    }
+}

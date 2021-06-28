@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysunitMapper">
+	
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into sys_unit(
+			UNIT_ID,	
+			UNIT_NAME,	
+			UNIT_USER,	
+			UNIT_USERPHONE,	
+			ADDRESS,	
+			PARENT_ID,	
+			STATUS,	
+			COMPANY_ID,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			SYSUNIT_ID
+		) values (
+			#{UNIT_ID},	
+			#{UNIT_NAME},	
+			#{UNIT_USER},	
+			#{UNIT_USERPHONE},	
+			#{ADDRESS},	
+			#{PARENT_ID},	
+			#{STATUS},	
+			#{COMPANY_ID},	
+			#{DIRETY},	
+			#{DELETE},	
+			#{UPDATETIME},	
+			#{SYSUNIT_ID}
+		)
+	</insert>
+	
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from sys_unit
+		where 
+			SYSUNIT_ID = #{SYSUNIT_ID}
+	</delete>
+	
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update  sys_unit
+			set 
+				UNIT_ID = #{UNIT_ID},
+				UNIT_NAME = #{UNIT_NAME},
+				UNIT_USER = #{UNIT_USER},
+				UNIT_USERPHONE = #{UNIT_USERPHONE},
+				ADDRESS = #{ADDRESS},
+				PARENT_ID = #{PARENT_ID},
+				STATUS = #{STATUS},
+				COMPANY_ID = #{COMPANY_ID},
+				DIRETY = #{DIRETY},
+				DELETE = #{DELETE},
+				UPDATETIME = #{UPDATETIME},
+			SYSUNIT_ID = SYSUNIT_ID
+			where 
+				SYSUNIT_ID = #{SYSUNIT_ID}
+	</update>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+			UNIT_ID,	
+			UNIT_NAME,	
+			UNIT_USER,	
+			UNIT_USERPHONE,	
+			ADDRESS,	
+			PARENT_ID,	
+			STATUS,	
+			COMPANY_ID,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			SYSUNIT_ID
+		from 
+			sys_unit
+		where 
+			SYSUNIT_ID = #{SYSUNIT_ID}
+	</select>
+	
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+				a.UNIT_ID,	
+				a.UNIT_NAME,	
+				a.UNIT_USER,	
+				a.UNIT_USERPHONE,	
+				a.ADDRESS,	
+				a.PARENT_ID,	
+				a.STATUS,	
+				a.COMPANY_ID,	
+				a.DIRETY,	
+				a.DELETE,	
+				a.UPDATETIME,	
+				a.SYSUNIT_ID
+		from 
+				sys_unit a
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+				a.unit_id,
+				a.unit_name,
+				a.unit_user,
+				a.unit_userphone,
+				a.address,
+				a.parent_id,
+				a.status,
+				a.company_id,
+				a.direty,
+				a.delete,
+				a.updatetime
+		from 
+				sys_unit a
+		where
+		      a.updatetime + 0 &gt; #{updatetime} + 0
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from sys_unit
+		where 
+			SYSUNIT_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+</mapper>

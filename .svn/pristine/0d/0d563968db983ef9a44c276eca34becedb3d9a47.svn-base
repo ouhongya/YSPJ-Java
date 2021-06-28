@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysroleMapper">
+	
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into sys_role(
+			ROLE_ID,	
+			ROLE_NAME,	
+			PARENT_ID,	
+			STATUS,	
+			FUNCTION_ID,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			SYSROLE_ID
+		) values (
+			#{ROLE_ID},	
+			#{ROLE_NAME},	
+			#{PARENT_ID},	
+			#{STATUS},	
+			#{FUNCTION_ID},	
+			#{DIRETY},	
+			#{DELETE},	
+			#{UPDATETIME},	
+			#{SYSROLE_ID}
+		)
+	</insert>
+	
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from sys_role
+		where 
+			SYSROLE_ID = #{SYSROLE_ID}
+	</delete>
+	
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update  sys_role
+			set 
+				ROLE_ID = #{ROLE_ID},
+				ROLE_NAME = #{ROLE_NAME},
+				PARENT_ID = #{PARENT_ID},
+				STATUS = #{STATUS},
+				FUNCTION_ID = #{FUNCTION_ID},
+				DIRETY = #{DIRETY},
+				DELETE = #{DELETE},
+				UPDATETIME = #{UPDATETIME},
+			SYSROLE_ID = SYSROLE_ID
+			where 
+				SYSROLE_ID = #{SYSROLE_ID}
+	</update>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+			ROLE_ID,	
+			ROLE_NAME,	
+			PARENT_ID,	
+			STATUS,	
+			FUNCTION_ID,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			SYSROLE_ID
+		from 
+			sys_role
+		where 
+			SYSROLE_ID = #{SYSROLE_ID}
+	</select>
+	
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+				a.ROLE_ID,	
+				a.ROLE_NAME,	
+				a.PARENT_ID,	
+				a.STATUS,	
+				a.FUNCTION_ID,	
+				a.DIRETY,	
+				a.DELETE,	
+				a.UPDATETIME,	
+				a.SYSROLE_ID
+		from 
+				sys_role a
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+				a.role_id,
+				a.role_name,
+				a.parent_id,
+				a.status,
+				a.function_id,
+				a.direty,
+				a.delete,
+				a.updatetime
+		from 
+				sys_role a
+		where
+		      a.updatetime + 0 &gt; #{updatetime} + 0
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from sys_role
+		where 
+			SYSROLE_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+</mapper>

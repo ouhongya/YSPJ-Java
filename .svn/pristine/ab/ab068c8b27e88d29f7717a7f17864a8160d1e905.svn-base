@@ -1,0 +1,1201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VisualizationMapper">
+    <select id="general" parameterType="java.lang.String" resultType="pd">
+        SELECT COUNT(sys_unit.unit_id) as value, 'unit' as alias
+        from sys_unit
+        where company_id = #{companyId}
+          and status = 0
+          and parent_id = 0
+        UNION ALL
+        SELECT COUNT(sys_user.user_id) as value, 'user' as alias
+        from sys_user
+        where company_id = #{companyId}
+          and status = 0
+        UNION ALL
+        SELECT COUNT(tb_excel.id) as value,
+               'excel'            as alias
+        FROM tb_excel
+        WHERE user_id IN (
+                SELECT sys_user.user_id
+                FROM sys_user
+                             LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                WHERE sys_user.company_id = #{companyId}
+                  AND sys_user.status = 0
+                  AND sys_role.function_id = 1
+                )
+          AND STATUS IN (0, 2)
+        UNION ALL
+        SELECT COUNT(tb_task.task_id) AS value,
+               'task'                 AS alias
+        FROM (
+                     SELECT tb_task.task_id
+                     FROM tb_task
+                                  LEFT JOIN tb_task_detail_norm ON tb_task.task_id = tb_task_detail_norm.task_id
+                     WHERE tb_task.STATUS = 8
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     GROUP BY tb_task.task_id
+                     UNION ALL
+                     SELECT tb_task.task_id
+                     FROM tb_task
+                                  INNER JOIN tb_task_delete_status
+                             ON tb_task.task_id = tb_task_delete_status.task_id and tb_task.STATUS = 1
+                                     AND
+                                tb_task_delete_status.STATUS in (8, 200)
+                                  LEFT JOIN tb_task_detail_norm ON tb_task.task_id = tb_task_detail_norm.task_id
+                     WHERE tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     GROUP BY tb_task.task_id
+                     ) tb_task
+        UNION ALL
+        SELECT SUM(tb_task.totolequestion) as value,
+               'issue'                     as alias
+        FROM (
+                     SELECT tb_task.task_id,
+                            tb_task.totolequestion
+                     FROM tb_task
+                     WHERE tb_task.STATUS = 8
+                       AND tb_task.TYPE = 1
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     GROUP BY tb_task.task_id
+                     UNION ALL
+                     SELECT tb_task.task_id,
+                            tb_task.totolequestion
+                     FROM tb_task
+                                  INNER JOIN tb_task_delete_status
+                             ON tb_task.task_id = tb_task_delete_status.task_id and tb_task.STATUS = 1
+                                     AND
+                                tb_task_delete_status.STATUS in (8, 200)
+                     WHERE tb_task.TYPE = 1
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     GROUP BY tb_task.task_id
+                     ) tb_task
+        UNION ALL
+        SELECT SUM(tb_task.totlecheck) as value,
+               'checkIssue'            as alias
+        FROM (
+                     select *
+                     from (SELECT tb_task.task_id,
+                                  count(tb_task_detail_checkrow.tasknormdetailid) as totlecheck
+                           FROM tb_task
+                                        LEFT JOIN (
+                                   SELECT tb_task_detail.*
+                                   FROM tb_task_detail
+                                                LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_role.function_id = '2'
+                                   ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                        INNER JOIN tb_task_detail_norm
+                                   ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                                        INNER JOIN tb_task_detail_norm_detail
+                                   ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                                        INNER JOIN tb_task_detail_checkrow
+                                   ON tb_task_detail_norm_detail.tasknormdetailid =
+                                      tb_task_detail_checkrow.tasknormdetailid
+                           WHERE tb_task.TYPE = 2
+                             AND tb_task.status != 1
+                             AND tb_task.user_id IN (
+                                   SELECT sys_user.user_id
+                                   FROM sys_user
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_user.company_id = #{companyId}
+                                     AND sys_user.STATUS = 0
+                                     AND sys_role.function_id = 2
+                                   )
+                           GROUP BY tb_task.task_id) t1
+                     union
+                     select *
+                     from (SELECT tb_task.task_id,
+                                  count(tb_task_detail_checkrow.tasknormdetailid) as totlecheck
+                           FROM tb_task
+                                        INNER JOIN tb_task_delete_status
+                                   ON tb_task.task_id = tb_task_delete_status.task_id AND tb_task.status = 1 and
+                                      tb_task_delete_status.STATUS in (8, 200)
+                                        LEFT JOIN (
+                                   SELECT tb_task_detail.*
+                                   FROM tb_task_detail
+                                                LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_role.function_id = '2'
+                                   ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                        INNER JOIN tb_task_detail_norm
+                                   ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                                        INNER JOIN tb_task_detail_norm_detail
+                                   ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                                        INNER JOIN tb_task_detail_checkrow
+                                   ON tb_task_detail_norm_detail.tasknormdetailid =
+                                      tb_task_detail_checkrow.tasknormdetailid
+                           WHERE tb_task.TYPE = 2
+
+                             AND tb_task.user_id IN (
+                                   SELECT sys_user.user_id
+                                   FROM sys_user
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_user.company_id = #{companyId}
+                                     AND sys_user.STATUS = 0
+                                     AND sys_role.function_id = 2
+                                   )
+                           GROUP BY tb_task.task_id) t2
+                     ) tb_task
+        UNION ALL
+        SELECT SUM(tb_task.score) as value,
+               'etcScore'         as alias
+        FROM (
+                     SELECT tb_task_detail_checkrow.score
+                     FROM tb_task
+                                  LEFT JOIN (SELECT tb_task_detail.*
+                                             from tb_task_detail
+                                                          LEFT JOIN sys_user on tb_task_detail.user_id = sys_user.user_id
+                                                          LEFT JOIN sys_role on sys_user.role_id = sys_role.role_id
+                                             where sys_role.function_id = '2') tb_task_detail
+                             ON tb_task.task_id = tb_task_detail.task_id
+                                  LEFT JOIN tb_task_detail_norm
+                             ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                                  LEFT JOIN tb_task_detail_norm_detail
+                             ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                                  INNER JOIN tb_task_detail_checkrow
+                             ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+                                     AND tb_task_detail_checkrow.score_type = 1
+                                     AND tb_task_detail_checkrow.score > 0
+                     WHERE tb_task.STATUS = 8
+                       AND tb_task.TYPE = 1
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     UNION ALL
+                     SELECT tb_task_detail_checkrow.score
+                     FROM tb_task
+                                  INNER JOIN tb_task_delete_status
+                             ON tb_task.task_id = tb_task_delete_status.task_id and tb_task.STATUS = 1
+                                     AND
+                                tb_task_delete_status.STATUS in (8, 200)
+                                  LEFT JOIN (SELECT tb_task_detail.*
+                                             from tb_task_detail
+                                                          LEFT JOIN sys_user on tb_task_detail.user_id = sys_user.user_id
+                                                          LEFT JOIN sys_role on sys_user.role_id = sys_role.role_id
+                                             where sys_role.function_id = '2') tb_task_detail
+                             ON tb_task.task_id = tb_task_detail.task_id
+                                  LEFT JOIN tb_task_detail_norm
+                             ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                                  LEFT JOIN tb_task_detail_norm_detail
+                             ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                                  INNER JOIN tb_task_detail_checkrow
+                             ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+                                     AND tb_task_detail_checkrow.score_type = 1
+                                     AND tb_task_detail_checkrow.score > 0
+                     WHERE tb_task.TYPE = 1
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     ) tb_task
+        UNION ALL
+        SELECT SUM(tb_task.score) as value,
+               'plusScore'        as alias
+        FROM (
+                     SELECT tb_task_detail_checkrow.score
+                     FROM tb_task
+                                  LEFT JOIN (SELECT tb_task_detail.*
+                                             from tb_task_detail
+                                                          LEFT JOIN sys_user on tb_task_detail.user_id = sys_user.user_id
+                                                          LEFT JOIN sys_role on sys_user.role_id = sys_role.role_id
+                                             where sys_role.function_id = '2') tb_task_detail
+                             ON tb_task.task_id = tb_task_detail.task_id
+                                  LEFT JOIN tb_task_detail_norm
+                             ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                                  LEFT JOIN tb_task_detail_norm_detail
+                             ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                                  INNER JOIN tb_task_detail_checkrow
+                             ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+                                     AND tb_task_detail_checkrow.score_type = 0
+                                     AND tb_task_detail_checkrow.score > 0
+                     WHERE tb_task.STATUS = 8
+                       AND tb_task.TYPE = 1
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     UNION ALL
+                     SELECT tb_task_detail_checkrow.score
+                     FROM tb_task
+                                  INNER JOIN tb_task_delete_status
+                             ON tb_task.task_id = tb_task_delete_status.task_id and tb_task.STATUS = 1
+                                     AND
+                                tb_task_delete_status.STATUS in (8, 200)
+                                  LEFT JOIN (SELECT tb_task_detail.*
+                                             from tb_task_detail
+                                                          LEFT JOIN sys_user on tb_task_detail.user_id = sys_user.user_id
+                                                          LEFT JOIN sys_role on sys_user.role_id = sys_role.role_id
+                                             where sys_role.function_id = '2') tb_task_detail
+                             ON tb_task.task_id = tb_task_detail.task_id
+                                  LEFT JOIN tb_task_detail_norm
+                             ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                                  LEFT JOIN tb_task_detail_norm_detail
+                             ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                                  INNER JOIN tb_task_detail_checkrow
+                             ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+                                     AND tb_task_detail_checkrow.score_type = 0
+                                     AND tb_task_detail_checkrow.score > 0
+                     WHERE tb_task.TYPE = 1
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     ) tb_task
+        UNION ALL
+        SELECT SUM(tb_task.totlecheck) as value,
+               'totalCheck'            as alias
+        FROM (
+                     SELECT tb_task.task_id,
+                            count(tb_task_detail_checkrow.tasknormdetailid) as totlecheck
+                     FROM tb_task
+                                  LEFT JOIN (
+                             SELECT tb_task_detail.*
+                             FROM tb_task_detail
+                                          LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_role.function_id = '2'
+                             ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                  INNER JOIN tb_task_detail_norm
+                             ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                                  INNER JOIN tb_task_detail_norm_detail
+                             ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                                  INNER JOIN tb_task_detail_checkrow
+                             ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+                     WHERE tb_task.STATUS = 8
+                       AND tb_task.TYPE = 1
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     GROUP BY tb_task.task_id
+                     UNION ALL
+                     SELECT tb_task.task_id,
+                            count(tb_task_detail_checkrow.tasknormdetailid) as totlecheck
+                     FROM tb_task
+                                  INNER JOIN tb_task_delete_status
+                             ON tb_task.task_id = tb_task_delete_status.task_id AND tb_task.STATUS = 1 and
+                                tb_task.STATUS = 1
+                                     AND
+                                tb_task_delete_status.STATUS in (8, 200)
+                                  LEFT JOIN (
+                             SELECT tb_task_detail.*
+                             FROM tb_task_detail
+                                          LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_role.function_id = '2'
+                             ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                  INNER JOIN tb_task_detail_norm
+                             ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                                  INNER JOIN tb_task_detail_norm_detail
+                             ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                                  INNER JOIN tb_task_detail_checkrow
+                             ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+                     WHERE tb_task.TYPE = 1
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     GROUP BY tb_task.task_id
+                     ) tb_task
+        UNION ALL
+        SELECT SUM(tb_task.totlecheck) as value,
+               'totalIssue'            as alias
+        FROM (
+                     SELECT tb_task.task_id,
+                            tb_task_detail.totlequestion as totlecheck
+                     FROM tb_task
+                                  LEFT JOIN (
+                             SELECT tb_task_detail.*
+                             FROM tb_task_detail
+                                          LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_role.function_id = '2'
+                             ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                  LEFT JOIN tb_task_detail_norm
+                             ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                     WHERE tb_task.STATUS = 8
+                       AND tb_task.TYPE = 2
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     GROUP BY tb_task.task_id
+                     UNION ALL
+                     SELECT tb_task.task_id,
+                            tb_task_detail.totlequestion
+                     FROM tb_task
+                                  INNER JOIN tb_task_delete_status
+                             ON tb_task.task_id = tb_task_delete_status.task_id and
+                                tb_task.STATUS = 1
+                                     AND
+                                tb_task_delete_status.STATUS in (8, 200)
+                                  LEFT JOIN (
+                             SELECT tb_task_detail.*
+                             FROM tb_task_detail
+                                          LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_role.function_id = '2'
+                             ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                  LEFT JOIN tb_task_detail_norm
+                             ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                     WHERE tb_task.TYPE = 2
+                       AND tb_task.user_id IN (
+                             SELECT sys_user.user_id
+                             FROM sys_user
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_user.company_id = #{companyId}
+                               AND sys_user.STATUS = 0
+                               AND sys_role.function_id = 2
+                             )
+                     GROUP BY tb_task.task_id
+                     ) tb_task
+    </select>
+
+    <select id="excelIssueChart" parameterType="java.lang.String" resultType="pd">
+        SELECT tb_task_detail_norm.NAME                        as name,
+               SUM(tb_task_detail_checkrow.score)              AS score,
+               COUNT(tb_task_detail_checkrow.tasknormdetailid) AS ratio
+        FROM (SELECT *
+              FROM (select *
+                    from tb_task
+                    WHERE tb_task.STATUS = 8
+                      AND tb_task.type = 1
+                      AND tb_task.user_id IN (
+                            SELECT sys_user.user_id
+                            FROM sys_user
+                                         LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                            WHERE sys_user.company_id = #{conpanyId}
+                              AND sys_role.function_id = '2'
+                            )) t1
+              UNION
+              select *
+              from (select tb_task.*
+                    from tb_task
+                                 INNER JOIN tb_task_delete_status
+                            ON tb_task.task_id = tb_task_delete_status.task_id and
+                               tb_task.STATUS = 1
+                                    AND
+                               tb_task_delete_status.STATUS in (8, 200)
+                    WHERE tb_task.type = 1
+                      AND tb_task.user_id IN (
+                            SELECT sys_user.user_id
+                            FROM sys_user
+                                         LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                            WHERE sys_user.company_id = #{conpanyId}
+                              AND sys_role.function_id = '2'
+                            )) y1) tb_task
+                     LEFT JOIN (
+                SELECT tb_task_detail.*
+                FROM tb_task_detail
+                             LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                             LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                WHERE sys_role.function_id = '2'
+                ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                     LEFT JOIN (
+                SELECT tb_task_detail_norm.*,
+                       tb_excel.id,
+                       tb_excel.NAME
+                FROM tb_task
+                             LEFT JOIN tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                             LEFT JOIN tb_task_detail_norm
+                        ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                             LEFT JOIN (
+                        SELECT tb_norm.norm_id,
+                               tb_excel.id,
+                               tb_excel.NAME
+                        FROM (
+                                     SELECT tb_excel.id,
+                                            tb_excel.NAME
+                                     FROM tb_excel
+                                     WHERE user_id IN (
+                                             SELECT sys_user.user_id
+                                             FROM sys_user
+                                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                             WHERE sys_user.company_id = #{conpanyId}
+                                               AND sys_role.function_id = '1'
+                                             )
+                                     ) tb_excel
+                                     LEFT JOIN tb_norm ON tb_excel.id = tb_norm.excel_id
+                        ) tb_excel ON tb_task_detail_norm.norm_id = tb_excel.norm_id
+                ) tb_task_detail_norm on tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                     LEFT JOIN tb_task_detail_norm_detail
+                ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                     LEFT JOIN tb_task_detail_checkrow
+                ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+        WHERE tb_task_detail_checkrow.score_type = 1
+          AND tb_task_detail_checkrow.score > 0
+        GROUP BY tb_task_detail_norm.id
+        ORDER BY ratio DESC
+    </select>
+
+    <select id="unitIssueChart" parameterType="java.lang.String" resultType="pd">
+        SELECT t.*, ifnull(y.hascheck, 0) as issueValue
+        FROM (SELECT tb_task_detail_norm.unit_name,
+                     tb_task_detail_norm.unit_id,
+                     SUM(tb_task_detail_checkrow.score)                                                   as score,
+                     COUNT(tb_task_detail_checkrow.tasknormdetailid)                                      as value,
+                     SUM(tb_task_detail_checkrow.score) + COUNT(tb_task_detail_checkrow.tasknormdetailid) AS sort
+              FROM (
+                           SELECT tb_task_detail_norm.taskdetail_id,
+                                  tb_task.unit_name,
+                                  tb_task.unit_id,
+                                  tb_task_detail_norm.tasknormid
+                           FROM (
+                                        SELECT tb_task.task_id,
+                                               tb_task.status,
+                                               tb_task.unit_id,
+                                               tb_task.type,
+                                               sys_unit.unit_name
+                                        FROM (
+                                                     SELECT tb_task.task_id,
+                                                            tb_task.status,
+                                                            tb_task.type,
+                                                            tb_task.unit_id
+                                                     FROM tb_task
+                                                     WHERE unit_id IN (SELECT sys_unit.unit_id
+                                                                       FROM sys_unit
+                                                                       WHERE company_id = #{companyId}
+                                                                         AND status = 0
+                                                                         AND parent_id = 0)
+                                                     ) tb_task
+                                                     LEFT JOIN sys_unit on tb_task.unit_id = sys_unit.unit_id
+                                        ) tb_task
+                                        LEFT JOIN (
+                                   SELECT tb_task_detail.*
+                                   FROM tb_task_detail
+                                                LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_role.function_id = '2'
+                                   ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                        LEFT JOIN tb_task_detail_norm
+                                   ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                           WHERE tb_task.STATUS = 8
+                             and tb_task.type = 1
+                           UNION
+                           SELECT tb_task_detail_norm.taskdetail_id,
+                                  tb_task.unit_name,
+                                  tb_task.unit_id,
+                                  tb_task_detail_norm.tasknormid
+                           FROM (
+                                        SELECT tb_task.task_id,
+                                               tb_task.status,
+                                               tb_task.unit_id,
+                                               tb_task.type,
+                                               sys_unit.unit_name
+                                        FROM (
+                                                     SELECT tb_task.task_id,
+                                                            tb_task.status,
+                                                            tb_task.type,
+                                                            tb_task.unit_id
+                                                     FROM tb_task
+                                                     WHERE unit_id IN (SELECT sys_unit.unit_id
+                                                                       FROM sys_unit
+                                                                       WHERE company_id = #{companyId}
+                                                                         AND status = 0
+                                                                         AND parent_id = 0)
+                                                     ) tb_task
+                                                     LEFT JOIN sys_unit on tb_task.unit_id = sys_unit.unit_id
+                                        ) tb_task
+                                        INNER JOIN tb_task_delete_status
+                                   ON tb_task.task_id = tb_task_delete_status.task_id
+                                           AND tb_task.STATUS = 1
+                                           and tb_task_delete_status.STATUS in (8, 200)
+                                        LEFT JOIN (
+                                   SELECT tb_task_detail.*
+                                   FROM tb_task_detail
+                                                LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_role.function_id = '2'
+                                   ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                        LEFT JOIN tb_task_detail_norm
+                                   ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                                           and tb_task.type = 1
+                           ) tb_task_detail_norm
+                           LEFT JOIN tb_task_detail_norm_detail
+                      ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                           LEFT JOIN tb_task_detail_checkrow
+                      ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+              WHERE tb_task_detail_checkrow.score_type = 1
+                AND tb_task_detail_checkrow.score > 0
+              GROUP BY tb_task_detail_norm.unit_id
+                     ) t
+                     LEFT JOIN
+                     (SELECT hascheck,
+                             t.unit_id
+                      FROM (
+                                   SELECT SUM(tb_task.totolequestion) AS hascheck,
+                                          tb_task.unit_id
+                                   FROM tb_task
+                                   WHERE unit_id IN (SELECT sys_unit.unit_id
+                                                     FROM sys_unit
+                                                     WHERE company_id = #{companyId}
+                                                       AND status = 0
+                                                       AND parent_id = 0)
+                                     AND type = 2
+                                     AND tb_task.STATUS = 8
+                                   GROUP BY tb_task.unit_id
+                                   union
+                                   SELECT tb_task.hascheck, tb_task.unit_id
+                                   FROM tb_task
+                                                INNER JOIN tb_task_delete_status
+                                           ON tb_task.task_id = tb_task_delete_status.task_id
+                                                   AND tb_task.STATUS = 1
+                                                   and tb_task_delete_status.STATUS in (8, 200)
+                                   WHERE unit_id IN (SELECT sys_unit.unit_id
+                                                     FROM sys_unit
+                                                     WHERE company_id = #{companyId}
+                                                       AND status = 0
+                                                       AND parent_id = 0)
+                                     AND type = 2
+                                   GROUP BY tb_task.unit_id) t) y
+                             on t.unit_id = y.unit_id
+        where 1 = 1
+        order by sort desc, value desc
+    </select>
+
+    <select id="unitEtcIssueChart" parameterType="java.lang.String" resultType="pd">
+        SELECT t.*, IFNULL(y.hascheck, 0) as issueValue
+        FROM (SELECT tb_task_detail_norm.unit_name,
+                     tb_task_detail_norm.unit_id,
+                     SUM(tb_task_detail_checkrow.score)              as score,
+                     COUNT(tb_task_detail_checkrow.tasknormdetailid) as value
+              FROM (
+                           SELECT tb_task_detail_norm.taskdetail_id,
+                                  tb_task.unit_name,
+                                  tb_task.unit_id,
+                                  tb_task_detail_norm.tasknormid
+                           FROM (
+                                        SELECT tb_task.task_id,
+                                               tb_task.status,
+                                               tb_task.unit_id,
+                                               tb_task.type,
+                                               sys_unit.unit_name
+                                        FROM (
+                                                     SELECT tb_task.task_id,
+                                                            tb_task.status,
+                                                            tb_task.type,
+                                                            tb_task.unit_id
+                                                     FROM tb_task
+                                                     WHERE unit_id IN (SELECT sys_unit.unit_id
+                                                                       FROM sys_unit
+                                                                       WHERE company_id = #{companyId}
+                                                                         AND status = 0
+                                                                         AND parent_id = 0)
+                                                     ) tb_task
+                                                     LEFT JOIN sys_unit on tb_task.unit_id = sys_unit.unit_id
+                                        ) tb_task
+                                        LEFT JOIN (
+                                   SELECT tb_task_detail.*
+                                   FROM tb_task_detail
+                                                LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_role.function_id = '2'
+                                   ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                        LEFT JOIN tb_task_detail_norm
+                                   ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                           WHERE tb_task.STATUS = 8
+                             and tb_task.type = 1
+                           union
+                           SELECT tb_task_detail_norm.taskdetail_id,
+                                  tb_task.unit_name,
+                                  tb_task.unit_id,
+                                  tb_task_detail_norm.tasknormid
+                           FROM (
+                                        SELECT tb_task.task_id,
+                                               tb_task.status,
+                                               tb_task.unit_id,
+                                               tb_task.type,
+                                               sys_unit.unit_name
+                                        FROM (
+                                                     SELECT tb_task.task_id,
+                                                            tb_task.status,
+                                                            tb_task.type,
+                                                            tb_task.unit_id
+                                                     FROM tb_task
+                                                     WHERE unit_id IN (SELECT sys_unit.unit_id
+                                                                       FROM sys_unit
+                                                                       WHERE company_id = #{companyId}
+                                                                         AND status = 0
+                                                                         AND parent_id = 0)
+                                                     ) tb_task
+
+                                                     LEFT JOIN sys_unit on tb_task.unit_id = sys_unit.unit_id
+                                        ) tb_task
+                                        INNER JOIN tb_task_delete_status
+                                   ON tb_task.task_id = tb_task_delete_status.task_id and tb_task.STATUS = 1 AND
+                                      tb_task.STATUS = 1
+                                           AND
+                                      tb_task_delete_status.STATUS IN (8, 200)
+                                        LEFT JOIN (
+                                   SELECT tb_task_detail.*
+                                   FROM tb_task_detail
+                                                LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_role.function_id = '2'
+                                   ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                        LEFT JOIN tb_task_detail_norm
+                                   ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                           WHERE tb_task.type = 1
+                           ) tb_task_detail_norm
+                           LEFT JOIN tb_task_detail_norm_detail
+                      ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                           LEFT JOIN tb_task_detail_checkrow
+                      ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+              WHERE tb_task_detail_checkrow.score_type = 1
+                AND tb_task_detail_checkrow.score > 0
+              GROUP BY tb_task_detail_norm.unit_id) t
+                     LEFT JOIN
+                     (select SUM(t.hascheck) as hascheck,
+                             t.unit_id
+                      from (SELECT tb_task.hascheck as hascheck,
+                                   tb_task.unit_id
+                            FROM tb_task
+                            WHERE unit_id IN (SELECT sys_unit.unit_id
+                                              FROM sys_unit
+                                              WHERE company_id = #{companyId}
+                                                AND status = 0
+                                                AND parent_id = 0)
+                              AND type = 2
+                              AND tb_task.STATUS = 8
+                            GROUP BY tb_task.unit_id
+                            union
+                            SELECT tb_task.hascheck as hascheck,
+                                   tb_task.unit_id
+                            FROM tb_task
+                                         INNER JOIN tb_task_delete_status
+                                    ON tb_task.task_id = tb_task_delete_status.task_id
+                                            AND tb_task.STATUS = 1
+                                            and tb_task_delete_status.STATUS in (8, 200)
+                            WHERE unit_id IN (SELECT sys_unit.unit_id
+                                              FROM sys_unit
+                                              WHERE company_id = #{companyId}
+                                                AND status = 0
+                                                AND parent_id = 0)
+                              AND type = 2
+
+                            GROUP BY tb_task.unit_id
+                                   ) t) y
+                             ON t.unit_id = y.unit_id
+        WHERE 1 = 1
+        order by score desc
+    </select>
+
+    <select id="unitPlusIssueChart" parameterType="java.lang.String" resultType="pd">
+        SELECT t.*, IFNULL(y.hascheck, 0) as issueValue
+        FROM (SELECT tb_task_detail_norm.unit_name,
+                     tb_task_detail_norm.unit_id,
+                     SUM(tb_task_detail_checkrow.score)              as score,
+                     COUNT(tb_task_detail_checkrow.tasknormdetailid) as value
+              FROM (
+                           SELECT tb_task_detail_norm.taskdetail_id,
+                                  tb_task.unit_name,
+                                  tb_task.unit_id,
+                                  tb_task_detail_norm.tasknormid
+                           FROM (
+                                        SELECT tb_task.task_id,
+                                               tb_task.status,
+                                               tb_task.unit_id,
+                                               tb_task.type,
+                                               sys_unit.unit_name
+                                        FROM (
+                                                     SELECT tb_task.task_id,
+                                                            tb_task.status,
+                                                            tb_task.type,
+                                                            tb_task.unit_id
+                                                     FROM tb_task
+                                                     WHERE unit_id IN (SELECT sys_unit.unit_id
+                                                                       FROM sys_unit
+                                                                       WHERE company_id = #{companyId}
+                                                                         AND status = 0
+                                                                         AND parent_id = 0)
+                                                     ) tb_task
+                                                     LEFT JOIN sys_unit on tb_task.unit_id = sys_unit.unit_id
+                                        ) tb_task
+                                        LEFT JOIN (
+                                   SELECT tb_task_detail.*
+                                   FROM tb_task_detail
+                                                LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_role.function_id = '2'
+                                   ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                        LEFT JOIN tb_task_detail_norm
+                                   ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                           WHERE tb_task.STATUS = 8
+                             and tb_task.type = 1
+                           UNION
+                           SELECT tb_task_detail_norm.taskdetail_id,
+                                  tb_task.unit_name,
+                                  tb_task.unit_id,
+                                  tb_task_detail_norm.tasknormid
+                           FROM (
+                                        SELECT tb_task.task_id,
+                                               tb_task.status,
+                                               tb_task.unit_id,
+                                               tb_task.type,
+                                               sys_unit.unit_name
+                                        FROM (
+                                                     SELECT tb_task.task_id,
+                                                            tb_task.status,
+                                                            tb_task.type,
+                                                            tb_task.unit_id
+                                                     FROM tb_task
+                                                     WHERE unit_id IN (SELECT sys_unit.unit_id
+                                                                       FROM sys_unit
+                                                                       WHERE company_id = #{companyId}
+                                                                         AND status = 0
+                                                                         AND parent_id = 0)
+                                                     ) tb_task
+                                                     LEFT JOIN sys_unit on tb_task.unit_id = sys_unit.unit_id
+                                        ) tb_task
+                                        INNER JOIN tb_task_delete_status
+                                   ON tb_task.task_id = tb_task_delete_status.task_id
+                                           and tb_task.STATUS = 1
+                                           and tb_task_delete_status.STATUS in (8, 200)
+                                        LEFT JOIN (
+                                   SELECT tb_task_detail.*
+                                   FROM tb_task_detail
+                                                LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_role.function_id = '2'
+                                   ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                        LEFT JOIN tb_task_detail_norm
+                                   ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                           WHERE tb_task.type = 1
+                           ) tb_task_detail_norm
+                           LEFT JOIN tb_task_detail_norm_detail
+                      ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                           LEFT JOIN tb_task_detail_checkrow
+                      ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+              WHERE tb_task_detail_checkrow.score_type = 0
+                AND tb_task_detail_checkrow.score > 0
+              GROUP BY tb_task_detail_norm.unit_id) t
+                     LEFT JOIN
+                     (SELECT SUM(c.hascheck) as hascheck,
+                             c.unit_id
+                      FROM (SELECT tb_task.hascheck,
+                                   tb_task.unit_id
+                            FROM tb_task
+                            WHERE unit_id IN (SELECT sys_unit.unit_id
+                                              FROM sys_unit
+                                              WHERE company_id = #{companyId}
+                                                AND status = 0
+                                                AND parent_id = 0)
+                              AND type = 2
+                              AND tb_task.STATUS = 8
+                            GROUP BY tb_task.unit_id
+                            union
+                            SELECT tb_task.hascheck,
+                                   tb_task.unit_id
+                            FROM tb_task
+                                         INNER JOIN tb_task_delete_status
+                                    ON tb_task.task_id = tb_task_delete_status.task_id AND tb_task.STATUS = 1
+                                            and tb_task_delete_status.STATUS in (8, 200)
+                            WHERE unit_id IN (SELECT sys_unit.unit_id
+                                              FROM sys_unit
+                                              WHERE company_id = #{companyId}
+                                                AND status = 0
+                                                AND parent_id = 0)
+                              AND type = 2
+
+                            GROUP BY tb_task.unit_id) c) y
+                             ON t.unit_id = y.unit_id
+        WHERE 1 = 1
+        order by score desc
+    </select>
+
+    <select id="checkModelIssueChart" parameterType="java.lang.String" resultType="pd">
+        SELECT tb_task_detail_norm.NAME                    AS normName,
+               tb_task_detail_norm_detail.item             AS modelName,
+               tb_task_detail_norm_detail.parent_id,
+               count(tb_task_detail_norm_detail.parent_id) AS value
+        FROM (
+                     SELECT *
+                     FROM (SELECT tb_task.*
+                           FROM tb_task
+                           WHERE tb_task.user_id IN (
+                                   SELECT sys_user.user_id
+                                   FROM sys_user
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_user.company_id = #{companyId}
+                                     AND sys_user.STATUS = 0
+                                     AND sys_role.function_id = 2
+                                   )
+                             AND tb_task.STATUS = 8
+                             AND tb_task.type = 1) v1
+                     union
+                     select *
+                     from (SELECT tb_task.*
+                           FROM tb_task
+                                        INNER JOIN tb_task_delete_status
+                                   ON tb_task.task_id = tb_task_delete_status.task_id
+                                           AND tb_task.STATUS = 1
+                                           and tb_task_delete_status.STATUS in (8, 200)
+                           WHERE tb_task.user_id IN (
+                                   SELECT sys_user.user_id
+                                   FROM sys_user
+                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                                   WHERE sys_user.company_id = #{companyId}
+                                     AND sys_user.STATUS = 0
+                                     AND sys_role.function_id = 2
+                                   )
+
+                             AND tb_task.type = 1) v2
+                     ) tb_task
+                     INNER JOIN (
+                SELECT tb_task_detail.*
+                FROM tb_task_detail
+                             LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                             LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                WHERE sys_role.function_id = '2'
+                ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                     INNER JOIN (
+                SELECT tb_task_detail_norm.*,
+                       tb_excel.NAME
+                FROM tb_task_detail_norm
+                             LEFT JOIN tb_norm ON tb_task_detail_norm.norm_id = tb_norm.norm_id
+                             LEFT JOIN tb_excel ON tb_norm.excel_id = tb_excel.id
+                ) tb_task_detail_norm ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                AND tb_task_detail_norm.norm_id IN (SELECT tb_norm.norm_id
+                                                    FROM tb_excel
+                                                                 LEFT JOIN tb_norm ON tb_excel.id = tb_norm.excel_id)
+                     LEFT JOIN (
+                SELECT tb_task_detail_norm_detail.*,
+                       tb_norm_detail.item
+                FROM (SELECT tb_task_detail_norm_detail.*, tb_norm_detail.parent_id
+                      FROM tb_task_detail_norm_detail
+                                   LEFT JOIN tb_norm_detail
+                              ON tb_task_detail_norm_detail.norm_detail_id = tb_norm_detail.id) tb_task_detail_norm_detail
+                             LEFT JOIN tb_norm_detail ON tb_task_detail_norm_detail.parent_id = tb_norm_detail.id
+                ) tb_task_detail_norm_detail ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                     INNER JOIN tb_task_detail_checkrow
+                ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+                        AND tb_task_detail_checkrow.score_type = 1
+                        AND tb_task_detail_checkrow.score > 0
+        WHERE 1 = 1
+        GROUP BY tb_task_detail_norm_detail.parent_id
+        ORDER BY VALUE
+                DESC
+    </select>
+
+    <select id="userWorkLoadChart" parameterType="java.lang.String" resultType="pd">
+        SELECT *
+        FROM (SELECT c.*,
+                     v.totalCheck
+              FROM (
+                           SELECT t.userName,
+                                  t.roleName,
+                                  t.workLoad,
+                                  t.user_id,
+                                  y.totleQuestion              AS totalQuestion,
+                                  IFNULL(u.totalIssueCheck, 0) AS totalIssueCheck
+                           FROM (
+                                        SELECT tb_task_detail.NAME                 AS userName,
+                                               tb_task_detail.role_name            AS roleName,
+                                               COUNT(tb_task_detail.taskdetail_id) AS workLoad,
+                                               tb_task_detail.user_id
+                                        FROM (
+                                                     SELECT tb_task.task_id
+                                                     FROM tb_task
+                                                                  LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                                     WHERE sys_unit.company_id = #{companyId}
+                                                       AND sys_unit.STATUS = 0
+                                                       AND sys_unit.parent_id = 0
+                                                       AND tb_task.STATUS = 8
+                                                       AND tb_task.type != 3
+                                                     UNION
+                                                     SELECT tb_task.task_id
+                                                     FROM tb_task
+                                                                  INNER JOIN tb_task_delete_status
+                                                             ON tb_task.task_id = tb_task_delete_status.task_id
+                                                                     AND tb_task.STATUS = 1
+                                                                     AND tb_task_delete_status.STATUS IN (8, 200)
+                                                                  LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                                     WHERE sys_unit.company_id = #{companyId}
+                                                       AND sys_unit.STATUS = 0
+                                                       AND sys_unit.parent_id = 0
+                                                       AND tb_task.type != 3
+                                                     ) tb_task
+                                                     LEFT JOIN (
+                                                SELECT tb_task_detail.task_id,
+                                                       tb_task_detail.taskdetail_id,
+                                                       tb_task_detail.hascheck,
+                                                       tb_task_detail.totlequestion,
+                                                       sys_user.NAME,
+                                                       sys_user.user_id,
+                                                       sys_user.role_name
+                                                FROM tb_task_detail
+                                                             LEFT JOIN (SELECT sys_user.user_id, sys_user.NAME, sys_role.role_name
+                                                                        FROM sys_user
+                                                                                     LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id) sys_user
+                                                        ON tb_task_detail.user_id = sys_user.user_id
+                                                ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                        GROUP BY tb_task_detail.user_id
+                                        ) t
+                                        LEFT JOIN (
+                                   SELECT sum(tb_task_detail.hascheck)      AS totalCheck,
+                                          sum(tb_task_detail.totlequestion) AS totleQuestion,
+                                          tb_task_detail.user_id
+                                   FROM (
+                                                SELECT tb_task.task_id
+                                                FROM tb_task
+                                                             LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                                WHERE sys_unit.company_id = #{companyId}
+                                                  AND sys_unit.STATUS = 0
+                                                  AND sys_unit.parent_id = 0
+                                                  AND tb_task.STATUS = 8
+                                                  AND tb_task.type = 1
+                                                UNION
+                                                SELECT tb_task.task_id
+                                                FROM tb_task
+                                                             INNER JOIN tb_task_delete_status
+                                                        ON tb_task.task_id = tb_task_delete_status.task_id
+                                                                AND tb_task.STATUS = 1
+                                                                AND tb_task_delete_status.STATUS IN (8, 200)
+                                                             LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                                WHERE sys_unit.company_id = #{companyId}
+                                                  AND sys_unit.STATUS = 0
+                                                  AND sys_unit.parent_id = 0
+
+                                                  AND tb_task.type = 1
+                                                ) tb_task
+                                                LEFT JOIN (
+                                           SELECT tb_task_detail.task_id,
+                                                  tb_task_detail.taskdetail_id,
+                                                  tb_task_detail.hascheck,
+                                                  tb_task_detail.totlequestion,
+                                                  sys_user.NAME,
+                                                  sys_user.user_id,
+                                                  sys_user.role_name
+                                           FROM tb_task_detail
+                                                        LEFT JOIN (SELECT sys_user.user_id, sys_user.NAME, sys_role.role_name
+                                                                   FROM sys_user
+                                                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id) sys_user
+                                                   ON tb_task_detail.user_id = sys_user.user_id
+                                           ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                   GROUP BY tb_task_detail.user_id
+                                   ) y ON t.user_id = y.user_id
+                                        LEFT JOIN (
+                                   SELECT sum(tb_task_detail.hascheck) AS totalIssueCheck,
+                                          tb_task_detail.user_id
+                                   FROM (
+                                                SELECT tb_task.task_id
+                                                FROM tb_task
+                                                             LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                                WHERE sys_unit.company_id = #{companyId}
+                                                  AND sys_unit.STATUS = 0
+                                                  AND sys_unit.parent_id = 0
+                                                  AND tb_task.STATUS = 8
+                                                  AND tb_task.type = 2
+                                                UNION
+                                                SELECT tb_task.task_id
+                                                FROM tb_task
+                                                             INNER JOIN tb_task_delete_status
+                                                        ON tb_task.task_id = tb_task_delete_status.task_id
+                                                                AND tb_task.STATUS = 1
+                                                                AND tb_task_delete_status.STATUS IN (8, 200)
+                                                             LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                                WHERE sys_unit.company_id = #{companyId}
+                                                  AND sys_unit.STATUS = 0
+                                                  AND sys_unit.parent_id = 0
+
+                                                  AND tb_task.type = 2
+                                                ) tb_task
+                                                LEFT JOIN (
+                                           SELECT tb_task_detail.task_id,
+                                                  tb_task_detail.taskdetail_id,
+                                                  tb_task_detail.hascheck,
+                                                  tb_task_detail.totlequestion,
+                                                  sys_user.NAME,
+                                                  sys_user.user_id,
+                                                  sys_user.role_name
+                                           FROM tb_task_detail
+                                                        LEFT JOIN (SELECT sys_user.user_id, sys_user.NAME, sys_role.role_name
+                                                                   FROM sys_user
+                                                                                LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id) sys_user
+                                                   ON tb_task_detail.user_id = sys_user.user_id
+                                           ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                   GROUP BY tb_task_detail.user_id
+                                   ) u ON y.user_id = u.user_id
+                           ) c,
+                   (
+                           SELECT tb_task_detail.user_id,
+                                  sum(tb_task_detail.hascheck) AS totalCheck
+                           FROM (
+                                        SELECT tb_task.task_id
+                                        FROM tb_task
+                                                     LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                        WHERE sys_unit.company_id = #{companyId}
+                                          AND sys_unit.STATUS = 0
+                                          AND sys_unit.parent_id = 0
+                                          AND tb_task.STATUS = 8
+                                          AND tb_task.type != 3
+                                        UNION
+                                        SELECT tb_task.task_id
+                                        FROM tb_task
+                                                     INNER JOIN tb_task_delete_status
+                                                ON tb_task.task_id = tb_task_delete_status.task_id
+                                                        AND tb_task.STATUS = 1
+                                                        AND tb_task_delete_status.STATUS IN (8, 200)
+
+                                                     LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                        WHERE sys_unit.company_id = #{companyId}
+                                          AND sys_unit.STATUS = 0
+                                          AND sys_unit.parent_id = 0
+
+                                          AND tb_task.type != 3
+                                        ) tb_task
+                                        LEFT JOIN (
+                                   SELECT tb_task_detail.task_id,
+                                          tb_task_detail.taskdetail_id,
+                                          tb_task_detail.hascheck,
+                                          tb_task_detail.totlequestion,
+                                          sys_user.NAME,
+                                          sys_user.user_id,
+                                          sys_user.role_name
+                                   FROM tb_task_detail
+                                                LEFT JOIN (SELECT sys_user.user_id, sys_user.NAME, sys_role.role_name
+                                                           FROM sys_user
+                                                                        LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id) sys_user
+                                           ON tb_task_detail.user_id = sys_user.user_id
+                                   ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                           GROUP BY tb_task_detail.user_id
+                           ) v
+              WHERE c.user_id = v.user_id
+                and 1 = 1) y
+        where 1 = 1
+        ORDER BY workLoad DESC, totalQuestion DESC
+    </select>
+
+    <select id="sameQuestionChart" parameterType="pd" resultType="pd">
+        SELECT *
+        FROM (
+                     SELECT tb_task_detail_norm.NAME                        AS normName,
+                            tb_task_detail_norm_detail.item                 as bigModuleName,
+                            tb_task_detail_norm_detail.itemS1               as smallModuleName,
+                            count(tb_task_detail_checkrow.tasknormdetailid) AS ratio,
+                            tb_task_detail_checkrow.content
+                     FROM (
+                                  SELECT tb_task.task_id
+                                  FROM tb_task
+                                               LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                  WHERE sys_unit.company_id = #{companyId}
+                                    AND sys_unit.STATUS = 0
+                                    AND sys_unit.parent_id = 0
+                                    AND tb_task.STATUS = 8
+                                    AND tb_task.type = 1
+                                  union
+                                  SELECT tb_task.task_id
+                                  FROM tb_task
+                                               INNER JOIN tb_task_delete_status
+                                          ON tb_task.task_id = tb_task_delete_status.task_id
+                                                  AND tb_task.STATUS = 1
+                                                  and tb_task_delete_status.STATUS in (8, 200)
+                                               LEFT JOIN sys_unit ON tb_task.unit_id = sys_unit.unit_id
+                                  WHERE sys_unit.company_id = #{companyId}
+                                    AND sys_unit.STATUS = 0
+                                    AND sys_unit.parent_id = 0
+
+                                    AND tb_task.type = 1
+                                  ) tb_task
+                                  INNER JOIN (
+                             SELECT tb_task_detail.*
+                             FROM tb_task_detail
+                                          LEFT JOIN sys_user ON tb_task_detail.user_id = sys_user.user_id
+                                          LEFT JOIN sys_role ON sys_user.role_id = sys_role.role_id
+                             WHERE sys_role.function_id = '2'
+                             ) tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                                  INNER JOIN (
+                             SELECT tb_task_detail_norm.*,
+                                    tb_excel.NAME
+                             FROM tb_task_detail_norm
+                                          LEFT JOIN tb_norm ON tb_task_detail_norm.norm_id = tb_norm.norm_id
+                                          LEFT JOIN tb_excel ON tb_norm.excel_id = tb_excel.id
+                             ) tb_task_detail_norm ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                             AND tb_task_detail_norm.norm_id IN (SELECT tb_norm.norm_id
+                                                                 FROM tb_excel
+                                                                              LEFT JOIN tb_norm ON tb_excel.id = tb_norm.excel_id)
+                                  LEFT JOIN (
+                             SELECT tb_task_detail_norm_detail.*,
+                                    tb_norm_detail.item
+                             FROM (SELECT tb_task_detail_norm_detail.*,
+                                          tb_norm_detail.parent_id,
+                                          tb_norm_detail.item AS itemS1
+                                   FROM tb_task_detail_norm_detail
+                                                LEFT JOIN tb_norm_detail
+                                           ON tb_task_detail_norm_detail.norm_detail_id = tb_norm_detail.id) tb_task_detail_norm_detail
+                                          LEFT JOIN tb_norm_detail
+                                     ON tb_task_detail_norm_detail.parent_id = tb_norm_detail.id
+                             ) tb_task_detail_norm_detail
+                             ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                                  INNER JOIN (SELECT tb_task_detail_checkrow.*, tb_norm_detail_row.content
+                                              FROM tb_task_detail_checkrow
+                                                           LEFT JOIN tb_norm_detail_row
+                                                      ON tb_task_detail_checkrow.norm_row_id = tb_norm_detail_row.id) tb_task_detail_checkrow
+                             ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+                                     AND tb_task_detail_checkrow.score_type = 1
+                                     AND tb_task_detail_checkrow.score > 0
+                     WHERE 1 = 1
+                     GROUP BY tb_task_detail_checkrow.norm_row_id
+                     ORDER BY ratio DESC
+                     ) t
+        WHERE ratio >= #{issueNum}
+    </select>
+</mapper>

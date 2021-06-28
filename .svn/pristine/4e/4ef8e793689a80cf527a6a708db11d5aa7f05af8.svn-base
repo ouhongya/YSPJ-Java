@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysuserMapper">
+	
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into sys_user(
+			USER_ID,	
+			PASSWORD,	
+			NAME,	
+			ROLE_ID,	
+			STATUS,	
+			PHONE,	
+			COMPANY_ID,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			ISUPDATE,	
+			SYSUSER_ID
+		) values (
+			#{USER_ID},	
+			#{PASSWORD},	
+			#{NAME},	
+			#{ROLE_ID},	
+			#{STATUS},	
+			#{PHONE},	
+			#{COMPANY_ID},	
+			#{DIRETY},	
+			#{DELETE},	
+			#{UPDATETIME},	
+			#{ISUPDATE},	
+			#{SYSUSER_ID}
+		)
+	</insert>
+	
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from sys_user
+		where 
+			SYSUSER_ID = #{SYSUSER_ID}
+	</delete>
+	
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update  sys_user
+			set 
+				USER_ID = #{USER_ID},
+				PASSWORD = #{PASSWORD},
+				NAME = #{NAME},
+				ROLE_ID = #{ROLE_ID},
+				STATUS = #{STATUS},
+				PHONE = #{PHONE},
+				COMPANY_ID = #{COMPANY_ID},
+				DIRETY = #{DIRETY},
+				DELETE = #{DELETE},
+				UPDATETIME = #{UPDATETIME},
+				ISUPDATE = #{ISUPDATE},
+			SYSUSER_ID = SYSUSER_ID
+			where 
+				SYSUSER_ID = #{SYSUSER_ID}
+	</update>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+			USER_ID,	
+			PASSWORD,	
+			NAME,	
+			ROLE_ID,	
+			STATUS,	
+			PHONE,	
+			COMPANY_ID,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			ISUPDATE,	
+			SYSUSER_ID
+		from 
+			sys_user
+		where 
+			SYSUSER_ID = #{SYSUSER_ID}
+	</select>
+	
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+				a.USER_ID,	
+				a.PASSWORD,	
+				a.NAME,	
+				a.ROLE_ID,	
+				a.STATUS,	
+				a.PHONE,	
+				a.COMPANY_ID,	
+				a.DIRETY,	
+				a.DELETE,	
+				a.UPDATETIME,	
+				a.ISUPDATE,	
+				a.SYSUSER_ID
+		from 
+				sys_user a
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+				a.user_id,
+				a.password,
+				a.name,
+				a.role_id,
+				a.status,
+				a.phone,
+				a.company_id,
+				a.direty,
+				a.delete,
+				a.updatetime,
+				a.isupdate
+		from 
+				sys_user a
+		where
+		        a.updatetime + 0 &gt; #{updatetime} + 0
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from sys_user
+		where 
+			SYSUSER_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+</mapper>

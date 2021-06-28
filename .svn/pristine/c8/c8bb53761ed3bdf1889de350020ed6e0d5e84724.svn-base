@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TbmessageuserMapper">
+	
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into tb_message_user(
+			MESSAGE_ID,	
+			STATUS,	
+			USER_ID,	
+			READ_TIME,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			TBMESSAGEUSER_ID
+		) values (
+			#{MESSAGE_ID},	
+			#{STATUS},	
+			#{USER_ID},	
+			#{READ_TIME},	
+			#{DIRETY},	
+			#{DELETE},	
+			#{UPDATETIME},	
+			#{TBMESSAGEUSER_ID}
+		)
+	</insert>
+	
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from tb_message_user
+		where 
+			TBMESSAGEUSER_ID = #{TBMESSAGEUSER_ID}
+	</delete>
+	
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update  tb_message_user
+			set 
+				MESSAGE_ID = #{MESSAGE_ID},
+				STATUS = #{STATUS},
+				USER_ID = #{USER_ID},
+				READ_TIME = #{READ_TIME},
+				DIRETY = #{DIRETY},
+				DELETE = #{DELETE},
+				UPDATETIME = #{UPDATETIME},
+			TBMESSAGEUSER_ID = TBMESSAGEUSER_ID
+			where 
+				TBMESSAGEUSER_ID = #{TBMESSAGEUSER_ID}
+	</update>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+			MESSAGE_ID,	
+			STATUS,	
+			USER_ID,	
+			READ_TIME,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			TBMESSAGEUSER_ID
+		from 
+			tb_message_user
+		where 
+			TBMESSAGEUSER_ID = #{TBMESSAGEUSER_ID}
+	</select>
+	
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+				a.MESSAGE_ID,	
+				a.STATUS,	
+				a.USER_ID,	
+				a.READ_TIME,	
+				a.DIRETY,	
+				a.DELETE,	
+				a.UPDATETIME,	
+				a.TBMESSAGEUSER_ID
+		from 
+				tb_message_user a
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+				a.message_id,
+				a.status,
+				a.user_id,
+				a.read_time,
+				a.direty,
+				a.delete,
+				a.updatetime
+		from 
+				tb_message_user a
+		where
+		        a.updatetime + 0 &gt; #{updatetime} + 0
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from tb_message_user
+		where 
+			TBMESSAGEUSER_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+</mapper>

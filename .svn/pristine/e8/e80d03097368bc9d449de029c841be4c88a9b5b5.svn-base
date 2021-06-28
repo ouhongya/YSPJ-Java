@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TbexecelMapper">
+	
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into tb_excel(
+			ID,	
+			URL,	
+			NAME,	
+			USER_ID,	
+			ISCATEGORY,	
+			CATEGORT_ID,	
+			STATUS,	
+			TYPE,	
+			VIEW,	
+			TOTLECHECK,	
+			SIZE,	
+			CREATED_TIME,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			TBEXECEL_ID
+		) values (
+			#{ID},	
+			#{URL},	
+			#{NAME},	
+			#{USER_ID},	
+			#{ISCATEGORY},	
+			#{CATEGORT_ID},	
+			#{STATUS},	
+			#{TYPE},	
+			#{VIEW},	
+			#{TOTLECHECK},	
+			#{SIZE},	
+			#{CREATED_TIME},	
+			#{DIRETY},	
+			#{DELETE},	
+			#{UPDATETIME},	
+			#{TBEXECEL_ID}
+		)
+	</insert>
+	
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from tb_excel
+		where 
+			TBEXECEL_ID = #{TBEXECEL_ID}
+	</delete>
+	
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update  tb_excel
+			set 
+				ID = #{ID},
+				URL = #{URL},
+				NAME = #{NAME},
+				USER_ID = #{USER_ID},
+				ISCATEGORY = #{ISCATEGORY},
+				CATEGORT_ID = #{CATEGORT_ID},
+				STATUS = #{STATUS},
+				TYPE = #{TYPE},
+				VIEW = #{VIEW},
+				TOTLECHECK = #{TOTLECHECK},
+				SIZE = #{SIZE},
+				CREATED_TIME = #{CREATED_TIME},
+				DIRETY = #{DIRETY},
+				DELETE = #{DELETE},
+				UPDATETIME = #{UPDATETIME},
+			TBEXECEL_ID = TBEXECEL_ID
+			where 
+				TBEXECEL_ID = #{TBEXECEL_ID}
+	</update>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+			ID,	
+			URL,	
+			NAME,	
+			USER_ID,	
+			ISCATEGORY,	
+			CATEGORT_ID,	
+			STATUS,	
+			TYPE,	
+			VIEW,	
+			TOTLECHECK,	
+			SIZE,	
+			CREATED_TIME,	
+			DIRETY,	
+			DELETE,	
+			UPDATETIME,	
+			TBEXECEL_ID
+		from 
+			tb_excel
+		where 
+			TBEXECEL_ID = #{TBEXECEL_ID}
+	</select>
+	
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+				a.ID,	
+				a.URL,	
+				a.NAME,	
+				a.USER_ID,	
+				a.ISCATEGORY,	
+				a.CATEGORT_ID,	
+				a.STATUS,	
+				a.TYPE,	
+				a.VIEW,	
+				a.TOTLECHECK,	
+				a.SIZE,	
+				a.CREATED_TIME,	
+				a.DIRETY,	
+				a.DELETE,	
+				a.UPDATETIME,	
+				a.TBEXECEL_ID
+		from 
+				tb_excel a
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+				a.id,
+				a.url,
+				a.name,
+				a.user_id,
+				a.iscategory,
+				a.categort_id,
+				a.status,
+				a.type,
+				a.view,
+				a.totlecheck,
+				a.size,
+				a.created_time,
+				a.direty,
+				a.delete,
+				a.updatetime
+		from 
+				tb_excel a
+		where
+		      a.updatetime + 0 &gt; #{updatetime} + 0
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from tb_excel
+		where 
+			TBEXECEL_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+</mapper>

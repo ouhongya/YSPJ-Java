@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ImageMapper">
+    <select id="Role1ToUserByImages" parameterType="java.lang.String" resultType="pd">
+        SELECT tb_task_detail_checkrow.problempicture,
+               tb_task_detail_checkrow.correctpicture
+        FROM tb_task_detail_checkrow
+        WHERE tb_task_detail_checkrow.norm_row_id IN (
+                SELECT tb_norm_detail_row.id
+                FROM tb_excel
+                             LEFT JOIN tb_norm ON tb_excel.id = tb_norm.excel_id
+                             LEFT JOIN tb_norm_detail ON tb_norm.norm_id = tb_norm_detail.norm_id
+                             LEFT JOIN tb_norm_detail_row ON tb_norm_detail.id = tb_norm_detail_row.norm_detail_id
+                WHERE tb_norm_detail_row.id IS NOT NULL
+                )
+    </select>
+
+    <select id="Role2ToUserByImages" parameterType="java.lang.String" resultType="pd">
+        SELECT tb_task_detail_checkrow.correctpicture,
+               tb_task_detail_checkrow.problempicture
+        FROM tb_task
+                     LEFT JOIN tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                     LEFT JOIN tb_task_detail_norm ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                     LEFT JOIN tb_task_detail_norm_detail
+                ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                     LEFT JOIN tb_task_detail_checkrow
+                ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+        where (tb_task_detail.user_id = #{userId} or tb_task_detail.group_id = #{userId} or tb_task.user_id = #{userId})
+    </select>
+
+    <select id="Role3ToUserByImages" parameterType="java.lang.String" resultType="pd">
+        SELECT tb_task_detail_checkrow.correctpicture,
+               tb_task_detail_checkrow.problempicture
+        FROM tb_task
+                     LEFT JOIN tb_task_detail ON tb_task.task_id = tb_task_detail.task_id
+                     LEFT JOIN tb_task_detail_norm ON tb_task_detail.taskdetail_id = tb_task_detail_norm.taskdetail_id
+                     LEFT JOIN tb_task_detail_norm_detail
+                ON tb_task_detail_norm.tasknormid = tb_task_detail_norm_detail.tasknormid
+                     LEFT JOIN tb_task_detail_checkrow
+                ON tb_task_detail_norm_detail.tasknormdetailid = tb_task_detail_checkrow.tasknormdetailid
+        where tb_task_detail.user_id = #{userId}
+    </select>
+</mapper>

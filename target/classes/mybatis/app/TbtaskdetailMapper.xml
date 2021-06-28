@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TbtaskdetailMapper">
+	
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into tb_task_detail(
+			taskdetail_id,
+			task_id,
+			totlequestion,
+			totlecheck,
+			hascheck,
+			created_time,
+			group_id,
+			user_id,
+			status,
+			direty,
+			`delete`,
+			updatetime,
+			`type`,
+			toperson
+		) values (
+			#{taskdetail_id},
+			#{task_id},
+			#{totlequestion},
+			#{totlecheck},
+			#{hascheck},
+			#{created_time},
+			#{group_id},
+			#{user_id},
+			#{status},
+			#{direty},
+			#{delete},
+			#{updatetime},
+			#{type},
+			#{toperson}
+		)
+	</insert>
+	
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from tb_task_detail
+		where 
+			TBTASKDETAIL_ID = #{TBTASKDETAIL_ID}
+	</delete>
+	
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update  tb_task_detail
+			set 
+				taskdetail_id = #{taskdetail_id},
+				task_id = #{task_id},
+				totlequestion = #{totlequestion},
+				totlecheck = #{totlecheck},
+				hascheck = #{hascheck},
+				created_time = #{created_time},
+				group_id = #{group_id},
+				user_id = #{user_id},
+				status = #{status},
+				direty = #{direty},
+				`delete` = #{delete},
+				updatetime = #{updatetime},
+				`type` = #{type},
+				toperson = #{toperson}
+			where 
+				taskdetail_id = #{taskdetail_id}
+	</update>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+			taskdetail_id,
+			task_id,
+			totlequestion,
+			totlecheck,
+			hascheck,
+			created_time,
+			group_id,
+			user_id,
+			status,
+			direty,
+			`delete`,
+			updatetime,
+			`type`,
+			toperson
+		from 
+			tb_task_detail
+		where 
+			taskdetail_id = #{taskdetail_id}
+	</select>
+	
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+				a.TASKDETAIL_ID,	
+				a.TASK_ID,	
+				a.TOTLEQUESTION,	
+				a.TOTLECHECK,	
+				a.HASCHECK,	
+				a.CREATED_TIME,	
+				a.GROUP_ID,	
+				a.USER_ID,	
+				a.STATUS,	
+				a.DIRETY,	
+				a.DELETE,	
+				a.UPDATETIME,	
+				a.TYPE,	
+				a.TOPERSON,	
+				a.TBTASKDETAIL_ID
+		from 
+				tb_task_detail a
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+				a.taskdetail_id,
+				a.task_id,
+				a.totlequestion,
+				a.totlecheck,
+				a.hascheck,
+				a.created_time,
+				a.group_id,
+				a.user_id,
+				a.status,
+				a.direty,
+				a.delete,
+				a.updatetime,
+				a.type,
+				a.toperson
+		from 
+				tb_task_detail a
+		where
+		        a.updatetime + 0 &gt; #{updatetime16} + 0
+	</select>
+
+
+
+	<select id="findByIdList" parameterType="pd" resultType="pd">
+		select
+				a.taskdetail_id,
+				a.task_id,
+				a.totlequestion,
+				a.totlecheck,
+				a.hascheck,
+				a.created_time,
+				a.group_id,
+				a.user_id,
+				a.status,
+				a.direty,
+				a.delete,
+				a.updatetime,
+				a.type,
+				a.toperson
+		from
+				tb_task_detail a
+		where
+		      	a.task_id = #{task_id}
+	</select>
+
+
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from tb_task_detail
+		where 
+			TBTASKDETAIL_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+</mapper>

@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UnitMapper">
+
+
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into SYS_UNIT(
+			NAME,
+			GROUPUSER,
+			PHONE,
+			ADDRESS,
+			PARENT_ID,
+			STATUS,
+			USER_ID,
+			CREATED_TIME,
+			UPDATE_TIME,
+			UNIT_ID
+		) values (
+			#{NAME},
+			#{GROUP},
+			#{PHONE},
+			#{ADDRESS},
+			#{PARENT_ID},
+			#{STATUS},
+			#{USER_ID},
+			#{CREATED_TIME},
+			#{UPDATE_TIME},
+			#{UNIT_ID}
+		)
+	</insert>
+
+
+
+
+	<!-- 删除-->
+	<update id="delete" parameterType="pd">
+		update  SYS_UNIT
+			set
+				STATUS = '2'
+			where
+				UNIT_ID = #{UNIT_ID}
+	</update>
+
+
+
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update  SYS_UNIT
+			set
+				NAME = #{NAME},
+				GROUPUSER = #{GROUP},
+				PHONE = #{PHONE},
+				ADDRESS = #{ADDRESS},
+				PARENT_ID = #{PARENT_ID},
+				STATUS = #{STATUS},
+				USER_ID = #{USER_ID},
+				UPDATE_TIME = #{UPDATE_TIME}
+			where
+				UNIT_ID = #{UNIT_ID}
+	</update>
+
+
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select
+			NAME,
+			GROUPUSER,
+			PHONE,
+			ADDRESS,
+			PARENT_ID,
+			STATUS,
+			USER_ID,
+			CREATED_TIME,
+			UPDATE_TIME,
+			UNIT_ID
+		from
+			SYS_UNIT
+		where
+			UNIT_ID = #{UNIT_ID}
+	</select>
+
+
+
+	<select id="findByNAMEpd" parameterType="pd" resultType="pd">
+		select
+			NAME,
+			GROUPUSER,
+			PHONE,
+			ADDRESS,
+			PARENT_ID,
+			STATUS,
+			USER_ID,
+			CREATED_TIME,
+			UPDATE_TIME,
+			UNIT_ID
+		from
+			SYS_UNIT
+		where
+			NAME = #{NAME}
+		and STATUS != '2'
+	</select>
+
+
+
+
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		a.NAME,
+		a.GROUPUSER,
+		a.PHONE,
+		a.ADDRESS,
+		a.PARENT_ID,
+		a.STATUS,
+		a.USER_ID,
+		a.CREATED_TIME,
+		a.UPDATE_TIME,
+		a.UNIT_ID
+		from
+		SYS_UNIT a
+		where
+		a.STATUS != '2'
+		and     a.PARENT_ID = '0'
+		<if test="pd.NAME!=null and pd.NAME!=''"><!-- 单位名称检索 -->
+			and a.NAME LIKE CONCAT(CONCAT('%', #{pd.NAME}),'%')
+		</if>
+		order by a.UPDATE_TIME desc
+	</select>
+
+	<!-- 列表(全部) -->
+	<select id="listAllone" parameterType="pd" resultType="pd">
+		select
+		a.NAME,
+		a.GROUPUSER,
+		a.PHONE,
+		a.ADDRESS,
+		a.PARENT_ID,
+		a.STATUS,
+		a.USER_ID,
+		a.CREATED_TIME,
+		a.UPDATE_TIME,
+		a.UNIT_ID
+		from
+		SYS_UNIT a
+		where
+		a.STATUS != '2'
+		<if test="NAME!=null and NAME!=''"><!-- 单位名称检索 -->
+			and a.NAME LIKE CONCAT(CONCAT('%', #{NAME}),'%')
+		</if>
+	</select>
+
+
+
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+				a.NAME,
+				a.GROUPUSER,
+				a.PHONE,
+				a.ADDRESS,
+				a.PARENT_ID,
+				a.STATUS,
+				a.USER_ID,
+				a.CREATED_TIME,
+				a.UPDATE_TIME,
+				a.UNIT_ID
+		from
+				SYS_UNIT a
+		where
+			    a.PARENT_ID = #{PARENT_ID}
+		and     a.STATUS != '2'
+		<if test="name!=null and name!=''"><!-- 单位名称检索 -->
+			and a.NAME LIKE CONCAT(CONCAT('%', #{name}),'%')
+		</if>
+	</select>
+
+
+	<!-- 列表(全部) -->
+	<select id="listAllNAME" parameterType="pd" resultType="pd">
+		select
+				a.NAME,
+				a.GROUPUSER,
+				a.PHONE,
+				a.ADDRESS,
+				a.PARENT_ID,
+				a.STATUS,
+				a.USER_ID,
+				a.CREATED_TIME,
+				a.UPDATE_TIME,
+				a.UNIT_ID
+		from
+				SYS_UNIT a
+		where
+			    a.PARENT_ID = #{PARENT_ID}
+		and     a.STATUS != '2'
+		<if test="name!=null and name!=''"><!-- 单位名称检索 -->
+			and a.NAME LIKE CONCAT(CONCAT('%', #{name}),'%')
+		</if>
+		order by a.UPDATE_TIME desc
+	</select>
+
+
+	<!-- 列表(全部) -->
+	<select id="listAllUNIT" parameterType="pd" resultType="pd">
+		select
+				a.NAME,
+				a.GROUPUSER,
+				a.PHONE,
+				a.ADDRESS,
+				a.PARENT_ID,
+				a.STATUS,
+				a.USER_ID,
+				a.CREATED_TIME,
+				a.UPDATE_TIME,
+				a.UNIT_ID
+		from
+				SYS_UNIT a
+		where
+	            a.STATUS != '2'
+	</select>
+
+
+	<!-- 列表(全部) -->
+	<select id="listtop" parameterType="pd" resultType="pd">
+		select
+				a.NAME,
+				a.GROUPUSER,
+				a.PHONE,
+				a.ADDRESS,
+				a.PARENT_ID,
+				a.STATUS,
+				a.USER_ID,
+				a.CREATED_TIME,
+				a.UPDATE_TIME,
+				a.UNIT_ID
+		from
+				SYS_UNIT a
+		where
+			    a.STATUS != '2'
+		and     a.PARENT_ID = '0'
+	</select>
+
+
+
+
+	<select id="listtaskids" parameterType="String" resultType="pd">
+		select
+				a.task_id
+		from
+				tb_task_excel a
+        where a.excel_id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		Group By a.task_id
+	</select>
+
+
+
+
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from SYS_UNIT
+		where
+		UNIT_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+
+
+
+	<!-- 列表(全部) -->
+	<select id="listAllByIds" parameterType="String" resultType="pd">
+		select
+		a.NAME,
+		a.GROUPUSER,
+		a.PHONE,
+		a.ADDRESS,
+		a.PARENT_ID,
+		a.UNIT_ID
+		from
+		SYS_UNIT a
+
+		where   a.STATUS != '2'
+
+		and     UNIT_ID in
+
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+
+	</select>
+
+
+	<select id="checkingTaskList" parameterType="pd" resultMap="checkingTaskListMap">
+        SELECT task_detail.id,
+               norm.nname,
+		norm.excelId,
+               norm.item,
+               ifnull(norm.total_score, 0) AS norm_total_score,
+               ifnull(norm.serial, 0)      AS serial,
+               task_detail.total_score     AS task_total_score,
+               task_detail.score,
+               task_detail.total_issue,
+               task_detail.check_item,
+               task_detail.to_check,
+               task_detail.task_id,
+               task_detail.norm_detail_id,
+               task_detail.status,
+               task_detail.censor_id
+        FROM tb_task
+                     left join tb_task_detail task_detail ON tb_task.id = task_detail.task_id
+                     LEFT JOIN (
+                	 SELECT norm.excelId        AS excelId,
+		norm.`NAME`    AS nname,
+		tb_norm_detail.id AS did,
+		tb_norm_detail.item,
+		tb_norm_detail.serial,
+		tb_norm_detail.total_score
+		FROM  (select tb_norm.*,tb_excel.id as excelId from tb_excel left join tb_norm on tb_excel.id = tb_norm.excel_id where tb_excel.status=1 group by tb_norm.id  ) norm
+		LEFT JOIN tb_norm_detail
+		ON norm.id = tb_norm_detail.norm_id
+		ORDER BY tb_norm_detail.serial ASC
+                ) AS norm ON task_detail.norm_detail_id = norm.did
+                     LEFT JOIN tb_task_censor ON
+                task_detail.censor_id = tb_task_censor.id
+
+        WHERE tb_task.id = #{task_id}
+		AND tb_task.STATUS != 2
+		<if test="lastLoginStart != null and lastLoginStart != ''">
+			<!-- 登录时间检索 -->
+			and tb_task.created_time &gt;= #{lastLoginStart}
+		</if>
+		<if test="lastLoginEnd != null and lastLoginEnd != ''">
+			<!-- 登录时间检索 -->
+			and tb_task.created_time &lt;= #{lastLoginEnd}
+		</if>
+    </select>
+
+<!--	<select id="checkingTaskList" parameterType="pd" resultMap="checkingTaskListMap">-->
+<!--		SELECT task_detail.id,-->
+<!--		norm.nname,-->
+<!--		norm.item,-->
+<!--		ifnull(norm.total_score, 0) AS norm_total_score,-->
+<!--		ifnull(norm.serial, 0)      AS serial,-->
+<!--		task_detail.total_score     AS task_total_score,-->
+<!--		task_detail.score,-->
+<!--		task_detail.total_issue,-->
+<!--		task_detail.check_item,-->
+<!--		task_detail.to_check,-->
+<!--		task_detail.task_id,-->
+<!--		task_detail.norm_detail_id,-->
+<!--		task_detail.status,-->
+<!--		task_detail.censor_id-->
+<!--		FROM tb_task-->
+<!--		left join tb_task_detail task_detail ON tb_task.id = task_detail.task_id-->
+<!--		LEFT JOIN (-->
+<!--		SELECT tb_norm.id        AS nid,-->
+<!--		tb_norm.`NAME`    AS nname,-->
+<!--		tb_norm_detail.id AS did,-->
+<!--		tb_norm_detail.item,-->
+<!--		tb_norm_detail.serial,-->
+<!--		tb_norm_detail.total_score-->
+<!--		FROM tb_norm-->
+<!--		LEFT JOIN tb_norm_detail ON tb_norm.id = tb_norm_detail.norm_id-->
+<!--		ORDER BY tb_norm_detail.serial ASC-->
+<!--		) AS norm ON task_detail.norm_detail_id = norm.did-->
+<!--		LEFT JOIN tb_task_censor ON-->
+<!--		task_detail.censor_id = tb_task_censor.id-->
+
+<!--		WHERE tb_task.id = #{task_id}-->
+<!--		AND tb_task.STATUS != 2-->
+<!--		<if test="lastLoginStart != null and lastLoginStart != ''">-->
+<!--			&lt;!&ndash; 登录时间检索 &ndash;&gt;-->
+<!--			and tb_task.created_time &gt;= #{lastLoginStart}-->
+<!--		</if>-->
+<!--		<if test="lastLoginEnd != null and lastLoginEnd != ''">-->
+<!--			&lt;!&ndash; 登录时间检索 &ndash;&gt;-->
+<!--			and tb_task.created_time &lt;= #{lastLoginEnd}-->
+<!--		</if>-->
+<!--	</select>-->
+
+	<resultMap id="checkingTaskListMap" type="com.fh.entity.app.TaskCensorRes">
+		<result column="id" property="id"/>
+		<result column="excelId" property="excelId"/>
+		<result column="nname" property="nname"/>
+		<result column="item" property="item"/>
+		<result column="norm_total_score" property="norm_total_score"/>
+		<result column="serial" property="serial"/>
+		<result column="task_total_score" property="task_total_score"/>
+		<result column="score" property="score"/>
+		<result column="total_issue" property="issue"/>
+		<result column="check_item" property="check_item"/>
+		<result column="to_check" property="to_check"/>
+		<result column="status" property="status"/>
+		<result column="task_id" property="task_id"/>
+		<result column="norm_detail_id" property="norm_detail_id"/>
+		<result column="censor_id" property="censor_id"/>
+		<collection property="censorRowList"
+					javaType="java.util.List"
+					ofType="com.fh.entity.app.CensorRow"
+					select="censorRowList"
+					column="id">
+		</collection>
+	</resultMap>
+
+
+
+	<select id="censorRowList" parameterType="java.lang.String" resultMap="censorRowListMap">
+        SELECT tb_task_row.id                  AS task_detail_id,
+               tb_task_row.id,
+               tb_task_row.detail_id,
+               tb_task_row.STATUS              as status,
+               tb_task_row.total_score         as total_score,
+               tb_task_row.score               as score,
+               tb_task_row.issue               as issue,
+               tb_norm_detail.serial           AS row_serial,
+               tb_norm_detail.item             AS row_item,
+               tb_norm_detail.untitled         AS row_untitled,
+               tb_norm_detail.content          AS row_content,
+               tb_norm_detail.total_score      AS row_total_score,
+               ifnull(tb_norm_detail.score, 0) as row_score,
+               tb_norm_detail.MODE             AS row_MODE,
+               tb_norm_detail.standard         AS row_standard,
+               tb_norm_detail.other            AS row_other
+        FROM tb_task_detail
+                     left join tb_task_row on tb_task_detail.id = tb_task_row.detail_id
+                     LEFT JOIN tb_norm_detail ON tb_task_row.norm_detail_id = tb_norm_detail.id
+        where tb_task_detail.id = #{id}
+    </select>
+
+
+	<resultMap id="censorRowListMap" type="com.fh.entity.app.CensorRow">
+		<result column="id" property="id"/>
+		<result column="detail_id" property="task_detail_id"/>
+		<result column="row_serial" property="row_serial"/>
+		<result column="row_untitled" property="row_untitled"/>
+		<result column="row_content" property="row_content"/>
+		<result column="row_total_score" property="row_total_score"/>
+		<result column="total_score" property="total_score"/>
+		<result column="score" property="score"/>
+		<result column="row_MODE" property="row_MODE"/>
+		<result column="row_standard" property="row_standard"/>
+		<result column="row_other" property="row_other"/>
+		<result column="row_item" property="row_item"/>
+		<collection property="censorRowIssueList"
+					ofType="com.fh.entity.app.CensorRowIssue"
+					javaType="java.util.List"
+					select="censorRowIssueList"
+					column="id"/>
+	</resultMap>
+
+
+	<select id="censorRowIssueList" parameterType="java.lang.String" resultMap="censorRowIssueListMap">
+        SELECT tb_task_issue.id     AS task_issue_id,
+               tb_task_issue.id,
+               tb_task_issue.conent as content,
+               tb_task_issue.type,
+               tb_task_issue.score  AS issue_score,
+               tb_task_issue.`STATUS`,
+               tb_task_issue.remark,
+               tb_task_issue.row_id,
+               tb_task_issue.rectify_measures,
+               tb_task_issue.rectify_remark,
+               tb_task_issue.rectify_time
+        FROM tb_task_row
+                     left join tb_task_issue on tb_task_row.id = tb_task_issue.row_id
+        where row_id = #{id}
+    </select>
+
+
+
+
+	<resultMap id="censorRowIssueListMap" type="com.fh.entity.app.CensorRowIssue">
+		<result column="task_issue_id" property="id"/>
+		<result column="content" property="content"/>
+		<result column="type" property="type"/>
+		<result column="issue_score" property="score"/>
+		<result column="STATUS" property="status"/>
+		<result column="remark" property="remark"/>
+		<result column="row_id" property="row_id"/>
+		<result column="rectify_measures" property="rectify_measures"/>
+		<result column="rectify_remark" property="rectify_remark"/>
+		<result column="rectify_time" property="rectify_time"/>
+		<collection property="censorRowIssueImageList"
+					ofType="com.fh.entity.app.CensorRowIssueImage"
+					javaType="java.util.List"
+					select="censorRowIssueImageList"
+					column="task_issue_id"/>
+	</resultMap>
+
+
+
+	<select id="censorRowIssueImageList" parameterType="java.lang.String"
+			resultType="com.fh.entity.app.CensorRowIssueImage">
+        select tb_image.id,
+               tb_image.url,
+               tb_image.type,
+               tb_image.name
+        from tb_task_issue
+                     left join tb_issue_img on tb_task_issue.id = tb_issue_img.issue_id
+                     LEFT JOIN tb_image ON tb_issue_img.image_id = tb_image.id and tb_image.STATUS = 1
+        where tb_task_issue.id = #{task_issue_id}
+    </select>
+
+</mapper>

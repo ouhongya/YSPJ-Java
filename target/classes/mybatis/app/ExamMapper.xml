@@ -1,0 +1,971 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExamMapper">
+    <insert id="addQuestionBank" parameterType="pd">
+        insert into tb_exam_category(id, name, status, company_id, is_default, user_id, created_time, last_update_time)
+        values (#{id}, #{name}, #{status}, #{company_id}, #{is_default}, #{user_id}, #{created_time},
+                #{last_update_time})
+    </insert>
+
+    <update id="statusQuestionBank" parameterType="pd">
+        update tb_exam_category
+        set status          = #{status},
+            last_update_time= now()
+        where id = #{id}
+    </update>
+    <update id="statusQuestionBankByDefault" parameterType="pd">
+        update tb_exam_category
+        set is_default      = 0,
+            last_update_time= now()
+        where id != #{id}
+    </update>
+
+    <update id="statusQuestionBankByDefaultOnt" parameterType="pd">
+        update tb_exam_category
+        set is_default      = 1,
+            last_update_time= now()
+        where id = #{id}
+    </update>
+
+    <update id="statusQuestionBankByTopic" parameterType="pd">
+        update tb_exam_topic
+        set status          = #{status},
+            last_update_time= now()
+        where exam_category_id = #{id}
+    </update>
+
+    <update id="remarkQuestionBank" parameterType="pd">
+        update tb_exam_category
+        set name            = #{name},
+            last_update_time= now()
+        where id = #{id}
+    </update>
+
+    <update id="deleteQuestionBank" parameterType="pd">
+        update tb_exam_category
+        set status          = 1,
+            last_update_time= now()
+        where id = #{id}
+    </update>
+
+    <update id="deleteQuestionBankByExamTopic" parameterType="pd">
+        update tb_exam_topic
+        set status          = 1,
+            last_update_time= now()
+        where exam_category_id = #{id}
+    </update>
+
+    <select id="queryQuestionBankOneRemark" parameterType="pd" resultType="pd">
+        select name
+        from tb_exam_category
+        where status in (0, 2)
+          and company_id = #{companyId}
+    </select>
+
+    <select id="queryQuestionBankList" parameterType="com.fh.entity.app.PageVo" resultType="pd">
+        select id,
+               NAME   as name,
+               STATUS as status,
+               company_id,
+               user_id,
+               created_time,
+               last_update_time,
+               isFlag,
+               is_default,
+               size   AS count
+        FROM (
+                     SELECT tb_exam_category.id,
+                            tb_exam_category.NAME,
+                            tb_exam_category.STATUS,
+                            tb_exam_category.company_id,
+                            tb_exam_category.user_id,
+                            tb_exam_category.is_default,
+                            tb_exam_category.created_time,
+                            tb_exam_category.last_update_time,
+                            1                       AS isFlag,
+                            count(tb_exam_topic.id) AS size
+                     FROM tb_exam_category
+                                  LEFT JOIN tb_exam_topic
+                             ON tb_exam_category.id = tb_exam_topic.exam_category_id AND tb_exam_topic.STATUS IN (0, 2)
+                     WHERE tb_exam_category.company_id = #{companyId}
+                       AND tb_exam_category.user_id = #{uid}
+                       AND tb_exam_category.STATUS IN (0, 2)
+                     GROUP BY tb_exam_category.id
+                     UNION
+                     SELECT tb_exam_category.id,
+                            tb_exam_category.NAME,
+                            tb_exam_category.STATUS,
+                            tb_exam_category.company_id,
+                            tb_exam_category.is_default,
+                            tb_exam_category.user_id,
+                            tb_exam_category.created_time,
+                            tb_exam_category.last_update_time,
+                            2                       AS isFlag,
+                            count(tb_exam_topic.id) AS size
+                     FROM tb_exam_category
+                                  LEFT JOIN tb_exam_topic
+                             ON tb_exam_category.id = tb_exam_topic.exam_category_id AND tb_exam_topic.STATUS IN (0, 2)
+                     WHERE tb_exam_category.company_id = #{companyId}
+                       AND tb_exam_category.user_id != #{uid}
+                       AND tb_exam_category.STATUS IN (0, 2)
+                     GROUP BY tb_exam_category.id
+                     ) t
+        ORDER BY is_default DESC, created_time DESC
+    </select>
+
+    <select id="queryQuestionBankListByCategory" parameterType="com.fh.entity.app.PageVo" resultType="pd">
+        select id,
+               NAME   as name,
+               STATUS as status,
+               company_id,
+               user_id,
+               created_time,
+               last_update_time,
+               isFlag,
+               is_default,
+               size   AS count
+                FROM (
+                SELECT tb_exam_category.id,
+                       tb_exam_category.NAME,
+                       tb_exam_category.STATUS,
+                       tb_exam_category.company_id,
+                       tb_exam_category.user_id,
+                       tb_exam_category.is_default,
+                       tb_exam_category.created_time,
+                       tb_exam_category.last_update_time,
+                       1                       AS isFlag,
+                       count(tb_exam_topic.id) AS size
+                FROM tb_exam_category
+                             LEFT JOIN tb_exam_topic
+                        ON tb_exam_category.id = tb_exam_topic.exam_category_id AND tb_exam_topic.STATUS IN (0, 2)
+                WHERE tb_exam_category.company_id = #{companyId}
+                  AND tb_exam_category.user_id = #{uid}
+                  AND tb_exam_category.id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        AND tb_exam_category.STATUS IN (0, 2)
+                GROUP BY tb_exam_category.id
+                UNION
+                SELECT tb_exam_category.id,
+                       tb_exam_category.NAME,
+                       tb_exam_category.STATUS,
+                       tb_exam_category.company_id,
+                       tb_exam_category.user_id,
+                       tb_exam_category.is_default,
+                       tb_exam_category.created_time,
+                       tb_exam_category.last_update_time,
+                       2                       AS isFlag,
+                       count(tb_exam_topic.id) AS size
+                FROM tb_exam_category
+                             LEFT JOIN tb_exam_topic
+                        ON tb_exam_category.id = tb_exam_topic.exam_category_id AND tb_exam_topic.STATUS IN (0, 2)
+                WHERE tb_exam_category.company_id = #{companyId}
+                  AND tb_exam_category.user_id != #{uid}
+                  AND tb_exam_category.id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        AND tb_exam_category.STATUS IN (0, 2)
+                GROUP BY tb_exam_category.id
+                ) t
+                ORDER BY is_default DESC, created_time DESC
+    </select>
+
+    <select id="queryQuestionBankListNotLimit" parameterType="pd" resultType="pd">
+        select id,
+               name,
+               company_id,
+               is_default
+        from tb_exam_category
+        where company_id = #{companyId}
+          and status = 0
+        order by is_default DESC, created_time desc
+    </select>
+
+    <insert id="addOneTopic" parameterType="com.fh.entity.app.TopicVo">
+        insert into tb_exam_topic(id, exam_category_id, type, stem, quote, exam_batch_id, status, user_id, created_time,
+                                  last_update_time)
+        values (#{id}, #{exam_category_id}, #{type}, #{stem}, #{quote}, #{exam_batch_id}, #{status}, #{user_id}, now(),
+                now())
+    </insert>
+
+    <update id="updateOneStem" parameterType="com.fh.entity.app.TopicVo">
+        update tb_exam_topic
+        set exam_category_id=#{exam_category_id},
+            stem=#{stem},
+            last_update_time = now()
+        where id = #{id}
+    </update>
+
+    <update id="updateOneTopicByAnswer" parameterType="com.fh.entity.app.Answer">
+        update tb_exam_answer
+        set forder=#{forder},
+            type = #{type},
+            content=#{content}
+        where id = #{id}
+    </update>
+
+
+    <resultMap id="queryOneTopicMap" type="com.fh.entity.app.Topic">
+        <result column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="stem" property="stem"/>
+        <result column="examCategoryId" property="examCategoryId"/>
+        <collection property="answerList" ofType="com.fh.entity.app.Answer">
+            <result column="answerId" property="id"/>
+            <result column="exam_topic" property="examTopic"/>
+            <result column="content" property="content"/>
+            <result column="forder" property="forder"/>
+            <result column="answerType" property="type"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryOneTopic" parameterType="java.lang.String" resultMap="queryOneTopicMap">
+        SELECT tb_exam_topic.id,
+               tb_exam_topic.type,
+               tb_exam_topic.stem,
+               tb_exam_topic.exam_category_id as examCategoryId,
+               tb_exam_answer.id              as answerId,
+               tb_exam_answer.content,
+               tb_exam_answer.forder,
+               tb_exam_answer.exam_topic,
+               tb_exam_answer.type            as answerType
+        FROM tb_exam_topic
+                     LEFT JOIN tb_exam_answer ON tb_exam_topic.id = tb_exam_answer.exam_topic
+        WHERE tb_exam_topic.id = #{id}
+        ORDER BY forder ASC
+    </select>
+
+    <select id="queryStemNameList" parameterType="java.lang.String" resultType="java.lang.String">
+        select tb_exam_topic.stem
+        from tb_exam_category
+                     left join tb_exam_topic on tb_exam_category.id = tb_exam_topic.exam_category_id
+        where tb_exam_category.company_id = #{companyId}
+          and tb_exam_category.status in (0, 2)
+          and tb_exam_topic.status in (0, 2)
+    </select>
+
+    <select id="queryExamName" parameterType="java.lang.String" resultType="java.lang.String">
+        select tb_exam_topic.stem
+        from tb_exam_topic
+        where id = #{id}
+    </select>
+
+    <insert id="addOneTopicByAnswer" parameterType="com.fh.entity.app.AnswerVo">
+        insert into tb_exam_answer(id, exam_topic, forder, type, content)
+        values (#{id}, #{exam_topic}, #{forder}, #{type}, #{content})
+    </insert>
+
+    <insert id="addBatckTopic" parameterType="com.fh.entity.app.BatckVo">
+        insert into tb_exam_batch(id, title, radio, checkbox, judge, user_id, status, created_time)
+        values (#{id}, #{title}, #{radio}, #{checkbox}, #{judge}, #{user_id}, #{status}, now())
+    </insert>
+
+    <select id="queryBankDetail" parameterType="pd" resultType="pd">
+        SELECT t.id,
+               t.title,
+               t.created_time,
+               t.name,
+               t.isFlag,
+               y.status,
+               0 as 'radio',
+               0 as 'checkbox',
+               0 as 'judge'
+        FROM (
+                     SELECT tb_exam_batch.title,
+                            tb_exam_batch.id,
+                            tb_exam_batch.created_time,
+                            sys_user.NAME,
+                            1 as isFlag
+                     FROM tb_exam_batch
+                                  LEFT JOIN sys_user ON tb_exam_batch.user_id = sys_user.user_id
+                                  LEFT JOIN tb_exam_topic ON tb_exam_batch.id = tb_exam_topic.exam_batch_id
+                     WHERE tb_exam_topic.exam_category_id = #{id}
+                       AND tb_exam_topic.`status` IN (0, 2)
+                       AND tb_exam_batch.user_id = #{uid}
+                     union
+                     SELECT tb_exam_batch.title,
+                            tb_exam_batch.id,
+                            tb_exam_batch.created_time,
+                            sys_user.NAME,
+                            2 as isFlag
+                     FROM tb_exam_batch
+                                  LEFT JOIN sys_user ON tb_exam_batch.user_id = sys_user.user_id
+                                  LEFT JOIN tb_exam_topic ON tb_exam_batch.id = tb_exam_topic.exam_batch_id
+                     WHERE tb_exam_topic.exam_category_id = #{id}
+                       AND tb_exam_topic.`status` IN (0, 2)
+                       AND tb_exam_batch.user_id != #{uid}
+                     GROUP BY tb_exam_topic.exam_batch_id
+                     ) t
+                     LEFT JOIN (
+                SELECT tb_exam_batch.id,
+                       tb_exam_topic.STATUS
+                FROM tb_exam_batch
+                             LEFT JOIN tb_exam_topic ON tb_exam_batch.id = tb_exam_topic.exam_batch_id
+                WHERE tb_exam_topic.exam_category_id = #{id}
+                  AND tb_exam_topic.`status` IN (0, 2)
+                  AND tb_exam_topic.exam_batch_id in (SELECT tb_exam_batch.id
+                                                      FROM tb_exam_batch
+                                                                   LEFT JOIN tb_exam_topic ON tb_exam_batch.id = tb_exam_topic.exam_batch_id)
+                GROUP BY tb_exam_topic.exam_batch_id
+                ) y ON t.id = y.id
+        where 1 = 1
+        ORDER BY created_time desc
+    </select>
+
+    <select id="queryExcelCount" parameterType="java.lang.String" resultType="pd">
+        SELECT count(tb_exam_topic.type) AS value,
+               'radio'                   as type
+        FROM tb_exam_batch
+                     LEFT JOIN tb_exam_topic ON tb_exam_batch.id = tb_exam_topic.exam_batch_id
+        WHERE tb_exam_topic.exam_batch_id = #{bankId}
+          and tb_exam_topic.exam_category_id = #{categoryId}
+          AND tb_exam_topic.`status` IN (0, 2)
+          AND tb_exam_topic.type = 1
+        GROUP BY tb_exam_topic.exam_category_id
+        union
+        SELECT count(tb_exam_topic.type) AS value,
+               'checkbox'                as type
+        FROM tb_exam_batch
+                     LEFT JOIN tb_exam_topic ON tb_exam_batch.id = tb_exam_topic.exam_batch_id
+        WHERE tb_exam_topic.exam_batch_id = #{bankId}
+          and tb_exam_topic.exam_category_id = #{categoryId}
+          AND tb_exam_topic.`status` IN (0, 2)
+          AND tb_exam_topic.type = 2
+        GROUP BY tb_exam_topic.exam_category_id
+        union
+        SELECT count(tb_exam_topic.type) AS value,
+               'judge'                   as type
+        FROM tb_exam_batch
+                     LEFT JOIN tb_exam_topic ON tb_exam_batch.id = tb_exam_topic.exam_batch_id
+        WHERE tb_exam_topic.exam_batch_id = #{bankId}
+          and tb_exam_topic.exam_category_id = #{categoryId}
+          AND tb_exam_topic.`status` IN (0, 2)
+          AND tb_exam_topic.type = 3
+        GROUP BY tb_exam_topic.exam_category_id
+    </select>
+
+    <select id="queryBankOneList" resultType="pd" parameterType="pd">
+        SELECT tb_exam_topic.id,
+               tb_exam_topic.type,
+               tb_exam_topic.stem,
+               tb_exam_topic.quote,
+               tb_exam_topic.created_time,
+               1 as isFlag,
+               sys_user.name
+        FROM tb_exam_topic
+                     left join sys_user on tb_exam_topic.user_id = sys_user.user_id
+        WHERE tb_exam_topic.exam_category_id = #{id}
+          AND tb_exam_topic.exam_batch_id = '0'
+          AND tb_exam_topic.status in (0, 2)
+          AND tb_exam_topic.user_id = #{uid}
+        UNION
+        SELECT tb_exam_topic.id,
+               tb_exam_topic.type,
+               tb_exam_topic.stem,
+               tb_exam_topic.quote,
+               tb_exam_topic.created_time,
+               2 as isFlag,
+               sys_user.name
+        FROM tb_exam_topic
+                     left join sys_user on tb_exam_topic.user_id = sys_user.user_id
+        WHERE tb_exam_topic.exam_category_id = #{id}
+          AND tb_exam_topic.exam_batch_id = '0'
+          AND tb_exam_topic.status in (0, 2)
+          AND tb_exam_topic.user_id != #{uid}
+        ORDER BY created_time desc
+    </select>
+
+    <update id="updateExcelStatus" parameterType="pd">
+        update tb_exam_topic
+        set status = #{status}
+        where exam_category_id = #{categoryId}
+          AND exam_batch_id = #{bankId}
+    </update>
+
+    <update id="updateOneTopicStatus" parameterType="pd">
+        update tb_exam_topic
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="queryUserByNameAndStuId" parameterType="pd" resultType="pd">
+        select name, stu_id
+        from sys_user
+        where user_id = #{uid}
+    </select>
+
+    <select id="examineRange" parameterType="pd" resultType="pd">
+        select sys_user.user_id as id,
+               sys_user.name,
+               sys_role.function_id,
+               sys_user.stu_id  as number,
+               (
+                       CASE sys_role.function_id
+                               WHEN 1 THEN
+                                       '专责'
+                               WHEN 2 THEN
+                                       '组长'
+                               ELSE
+                                       '检察员'
+                               END
+                       )           duty
+        from sys_user
+                     left join sys_role on sys_user.role_id = sys_role.role_id
+        where sys_user.company_id = #{compayId}
+          and sys_user.status = 0
+        order by function_id asc
+    </select>
+
+    <insert id="saveExam" parameterType="com.fh.entity.app.ExamVo">
+        insert into tb_exam (id, name, start_time, end_time, long_time, exam_count, total_score, qualified_score,
+                             remarks,
+                             total_user, finish_user, unfinish_user, status, is_flag, user_id, company_id, created_time)
+        values (#{id}, #{name}, #{startTime}, #{endTime}, #{longTime}, #{exam_count}, #{totalScore}, #{qualifiedScore},
+                #{remarks},
+                #{totalUser}, 0, #{unfinish_user}, #{status}, #{isFlag}, #{userId}, #{companyId}, now())
+    </insert>
+
+    <insert id="saveExamType" parameterType="com.fh.entity.app.examType">
+        insert into tb_exam_type (id, exam_id, type, score, count)
+        VALUES (#{id}, #{examId}, #{type}, #{score}, #{count})
+    </insert>
+
+    <insert id="saveExamUser" parameterType="pd">
+        insert into tb_exam_user (id, exam_id, user_id, score, etc_score, right_topic, bad_topic, exam_count,
+                                  topic_count, created_time, status, is_flag)
+        VALUES (#{id}, #{exam_id}, #{user_id}, #{score}, #{etc_score}, #{right_topic}, #{bad_topic}, #{exam_count},
+                #{topic_count}, #{created_time},
+                #{status}, #{is_flag})
+    </insert>
+
+    <select id="selectedTopic" parameterType="java.util.List" resultType="pd">
+        SELECT tb_exam_topic.id,
+               tb_exam_topic.type
+        FROM tb_exam_category
+                     LEFT JOIN tb_exam_topic ON tb_exam_category.id = tb_exam_topic.exam_category_id
+                WHERE tb_exam_category.STATUS = 0
+                  AND tb_exam_topic.STATUS = 0
+                  AND tb_exam_category.id
+        <foreach collection="list" open="in ( " separator="," item="item" close=")">
+            #{item}
+        </foreach>
+        group by tb_exam_topic.id
+    </select>
+
+    <insert id="saveExamUserToTopic" parameterType="pd">
+        insert into tb_exam_user_topic (id, exam_user_id, exam_topic_id, answer, update_time, status, score)
+        VALUES (#{id}, #{exam_user_id}, #{exam_topic_id}, #{answer}, #{update_time}, #{status}, #{score})
+    </insert>
+
+    <resultMap id="answerSheetMap" type="com.fh.entity.app.AnswerSheet">
+        <result property="id" column="id"/>
+        <result property="stem" column="stem"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+        <result property="quote" column="quote"/>
+        <collection property="answerTopicList" ofType="com.fh.entity.app.AnswerTopic">
+            <result property="answerId" column="answerId"/>
+            <result property="content" column="content"/>
+            <result property="forder" column="forder"/>
+            <result property="isFlag" column="isFlag"/>
+        </collection>
+    </resultMap>
+
+    <select id="answerSheet" parameterType="java.util.List" resultMap="answerSheetMap">
+        SELECT tb_exam_topic.name,
+               tb_exam_topic.id,
+               tb_exam_topic.stem,
+               tb_exam_topic.type,
+               tb_exam_topic.quote,
+               tb_exam_answer.id   AS answerId,
+               tb_exam_answer.content,
+               tb_exam_answer.forder,
+               tb_exam_answer.type AS isFlag
+        FROM (
+                     SELECT tb_exam_category.NAME,
+                            tb_exam_topic.*
+                     FROM tb_exam_category
+                                  LEFT JOIN tb_exam_topic ON tb_exam_category.id = tb_exam_topic.exam_category_id
+                     WHERE tb_exam_category.`status` = 0
+                     ) tb_exam_topic
+                     LEFT JOIN tb_exam_answer ON tb_exam_topic.id = tb_exam_answer.exam_topic
+                where tb_exam_topic.id
+        <foreach collection="list" open="in ( " separator="," item="item" close=")">
+            #{item}
+        </foreach>
+        ORDER BY tb_exam_topic.type DESC
+    </select>
+
+    <resultMap id="querySingleExamStatusMap" type="com.fh.entity.app.ExamStatus">
+        <result property="id" column="id"/>
+        <result property="is_flag" column="is_flag"/>
+        <result property="status" column="status"/>
+        <collection property="examUserStatusList" ofType="com.fh.entity.app.ExamUserStatus">
+            <result property="id" column="userId"/>
+            <result property="status" column="userStatus"/>
+        </collection>
+    </resultMap>
+
+    <select id="querySingleExamStatus" parameterType="java.lang.String" resultMap="querySingleExamStatusMap">
+        select id,
+               status,
+               is_flag,
+               tb_exam_user.id     as userId,
+               tb_exam_user.status as userStatus
+        from tb_exam
+                     left join tb_exam_user on tb_exam.id = tb_exam_user.exam_id
+        where id = #{examId}
+          and tb_exam_user.is_flag = 0
+    </select>
+
+
+    <update id="updateUserSingleAnswerTopic" parameterType="pd">
+        update tb_exam_user_topic
+        set answer     =#{answer},
+            update_time=#{update_time},
+            status     = #{status}
+        where id = #{id}
+    </update>
+
+    <update id="updateAnswerToUser" parameterType="pd">
+        update tb_exam_user
+        set score=#{score},
+            etc_score=#{etc_score},
+            right_topic=#{right_topic},
+            bad_topic=#{bad_topic},
+            type=#{type},
+            duration=#{duration},
+            status=#{status},
+            is_hash =#{is_hash}
+        where exam_id = #{exam_id}
+          and user_id = #{user_id}
+          and is_flag = 0
+    </update>
+
+    <insert id="saveExamHistory" parameterType="pd">
+        insert into tb_exam_history (exam_user_id, sort, score, duration, is_flag, created_time)
+        values (#{exam_user_id}, #{sort}, #{score}, #{duration}, #{is_flag}, #{created_time})
+    </insert>
+
+    <select id="queryExamUserToHistorySort" parameterType="java.lang.String" resultType="pd">
+        SELECT tb_exam_history.sort
+        FROM tb_exam_user
+                     LEFT JOIN tb_exam_history ON tb_exam_user.id = tb_exam_history.exam_user_id
+        where tb_exam_user.is_flag = 0
+          and tb_exam_user.exam_id = #{examId}
+    </select>
+
+    <update id="updateExam" parameterType="pd">
+        update tb_exam
+        set finish_user=#{finish_user},
+            unfinish_user=#{unfinish_user},
+            status=#{status}
+        where id = #{examId}
+    </update>
+
+    <select id="queryExamToUserStatus" parameterType="java.lang.String" resultType="pd">
+        SELECT tb_exam_user.user_id,
+               tb_exam_user.status
+        FROM tb_exam_user
+        WHERE tb_exam_user.user_id IN (
+                SELECT tb_exam_user.user_id
+                FROM tb_exam
+                             LEFT JOIN tb_exam_user ON tb_exam.id = tb_exam_user.exam_id
+                WHERE tb_exam.id = #{examId}
+
+                GROUP BY tb_exam_user.user_id
+                )
+          AND tb_exam_user.exam_id = #{examId}
+    </select>
+
+    <select id="queryExamToName" parameterType="com.fh.entity.app.ExamVo" resultType="pd">
+        select tb_exam.name
+        from tb_exam
+        where tb_exam.company_id = #{companyId}
+          and tb_exam.name = #{name}
+          and tb_exam.status != 1
+    </select>
+
+    <insert id="saveExamByCategory" parameterType="pd">
+        insert into tb_exam_in_category (category_id, exam_id) value (#{id}, #{examId})
+    </insert>
+
+
+    <select id="queryExamList" parameterType="com.fh.entity.app.PageVo" resultType="pd">
+        SELECT tb_exam.name,
+               tb_exam.id               as examId,
+               tb_exam_user.id          as examUserId,
+               tb_exam.start_time       as startTime,
+               tb_exam.end_time         as endTime,
+               tb_exam.total_score      as totalScore,
+               tb_exam.qualified_score  as qualifiedScore,
+               tb_exam.long_time        as longTime,
+               tb_exam.exam_count       as examCount,
+               tb_exam.created_time     as createdTime,
+               tb_exam_user.status,
+               tb_exam_user.exam_count  AS examCount,
+               tb_exam_user.topic_count AS topicCount,
+               tb_exam_user.bad_topic   AS badTopic,
+               tb_exam_user.score,
+               tb_exam_user.is_hash     AS isHash
+        FROM tb_exam
+                     LEFT JOIN tb_exam_user ON tb_exam.id = tb_exam_user.exam_id
+        WHERE tb_exam_user.is_flag = 0
+          AND tb_exam.`status` != 1
+          AND tb_exam.is_flag != 1
+          and tb_exam_user.user_id = #{uid}
+        order by tb_exam.created_time desc
+    </select>
+
+    <select id="queryExamListRoleLaunch" parameterType="com.fh.entity.app.PageVo" resultType="pd">
+        SELECT tb_exam.id,
+               tb_exam.name,
+               tb_exam.start_time    as startTime,
+               tb_exam.end_time      as endTime,
+               tb_exam.total_user    as totalUser,
+               tb_exam.finish_user   as finishUser,
+               tb_exam.unfinish_user as unfinishUser,
+               tb_exam.created_time  as createdTime,
+               tb_exam.status
+        FROM tb_exam
+                WHERE user_id = #{uid}
+        <if test="search != null and search != ''">
+            and name like concat('%', #{search}, '%')
+        </if>
+        AND status != 1
+        and is_flag = 0
+                order by tb_exam.created_time desc
+    </select>
+
+    <update id="deleteExams" parameterType="java.lang.String">
+        update tb_exam
+        set status = 1
+        where id = #{id}
+    </update>
+
+    <update id="deleteExamss" parameterType="java.lang.String">
+        update tb_exam
+        set status = 2
+        where id = #{id}
+    </update>
+
+    <update id="deleteExamsss" parameterType="java.lang.String">
+        update tb_exam
+        set status = 0
+        where id = #{id}
+    </update>
+
+    <update id="deleteExamUser" parameterType="java.lang.String">
+        update tb_exam_user
+        set status = 5
+        where exam_id = #{id}
+    </update>
+
+
+    <update id="deleteExamUsers" parameterType="pd">
+        update tb_exam_user
+        set status = #{status},
+            retain=#{retain}
+        where id = #{id}
+    </update>
+
+    <update id="deleteExamUserss" parameterType="pd">
+        update tb_exam_user
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="queryExamUserStatus" parameterType="java.lang.String" resultType="pd">
+        select tb_exam_user.id, tb_exam_user.status, tb_exam_user.retain
+        from tb_exam_user
+        where exam_id = #{id}
+    </select>
+
+
+    <select id="queryExamUserToId" parameterType="java.lang.String" resultType="pd">
+        select id, tb_exam_user.user_id
+        from tb_exam_user
+        where exam_id = #{id}
+    </select>
+
+    <update id="updateExamToUserById" parameterType="pd">
+        update tb_exam_user
+        set score=#{score},
+            etc_score=#{etc_score},
+            right_topic=#{right_topic},
+            bad_topic=#{bad_topic},
+            type=#{type},
+            duration=#{duration},
+            status=#{status},
+            is_hash=#{is_hash}
+        where id = #{id}
+    </update>
+
+    <update id="updateExamToUserByAnswer" parameterType="pd">
+        update tb_exam_user_topic
+                set answer=#{answer},
+        <if test="update_time != null and update_time != ''">
+            update_time=#{update_time},
+        </if>
+        status=#{status}
+                where id = #{id}
+    </update>
+
+    <insert id="saveUserHistory" parameterType="pd">
+        insert into tb_exam_history (exam_user_id, exam_id, user_id, sort, score, duration, is_flag, created_time)
+        values (#{exam_user_id}, #{exam_id}, #{user_id}, #{sort}, #{score}, #{duration}, #{is_flag}, #{created_time})
+    </insert>
+
+    <select id="queryExamToUserHistory1" parameterType="pd" resultType="pd">
+        select score
+        from tb_exam_history
+        where exam_id = #{exam_id}
+          and user_id = #{uid}
+          and is_flag = 0
+    </select>
+
+    <select id="queryExamToUserHistory2" parameterType="pd" resultType="pd">
+        select score
+        from tb_exam_history
+        where exam_id = #{exam_id}
+          and user_id = #{uid}
+          and is_flag = 1
+    </select>
+
+    <update id="updateExamBayUser" parameterType="pd">
+        update tb_exam
+        set finish_user=#{finish_user},
+            unfinish_user=#{unfinish_user}
+        where id = #{id}
+    </update>
+
+    <select id="queryExamUserSize" parameterType="java.lang.String" resultType="pd">
+        select total_user, finish_user, unfinish_user, status
+        from tb_exam
+        where id = #{examId}
+    </select>
+
+    <select id="historicalAchievements" parameterType="pd" resultType="pd">
+        select sort,
+               score,
+               duration,
+               is_flag,
+               created_time
+        from tb_exam_history
+        where exam_id = #{id}
+          and user_id = #{ids}
+        order by sort asc
+    </select>
+
+    <resultMap id="queryUserToAnswerListMap" type="com.fh.entity.app.UserToAnswer">
+        <result property="id" column="id"/>
+        <result column="exam_id" property="exam_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="score" property="score"/>
+        <result column="etc_score" property="etc_score"/>
+        <result column="right_topic" property="right_topic"/>
+        <result column="bad_topic" property="bad_topic"/>
+        <result column="exam_count" property="exam_count"/>
+        <result column="topic_count" property="topic_count"/>
+        <result column="created_time" property="created_time"/>
+        <result column="type" property="type"/>
+        <result column="retain" property="retain"/>
+        <result column="duration" property="duration"/>
+        <result column="status" property="status"/>
+        <result column="is_flag" property="is_flag"/>
+        <result column="is_hash" property="is_hash"/>
+        <result column="answer_list" property="answerList"/>
+        <collection property="answerList" ofType="com.fh.entity.app.UserTopic">
+            <result column="exam_user_topic_id" property="id"/>
+            <result column="exam_user_id" property="exam_user_id"/>
+            <result column="exam_topic_id" property="exam_topic_id"/>
+            <result column="answer" property="answer"/>
+            <result column="update_time" property="update_time"/>
+            <result column="exam_user_topic_status" property="status"/>
+            <result column="exam_user_topic_score" property="score"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryUserToAnswerList" parameterType="java.lang.String" resultMap="queryUserToAnswerListMap">
+        select tb_exam_user.id,
+               tb_exam_user.exam_id,
+               tb_exam_user.user_id,
+               tb_exam_user.score,
+               tb_exam_user.etc_score,
+               tb_exam_user.right_topic,
+               tb_exam_user.bad_topic,
+               tb_exam_user.exam_count,
+               tb_exam_user.topic_count,
+               tb_exam_user.created_time,
+               tb_exam_user.type,
+               tb_exam_user.retain,
+               tb_exam_user.duration,
+               tb_exam_user.status,
+               tb_exam_user.is_flag,
+               tb_exam_user.is_hash,
+               tb_exam_user_topic.id     as exam_user_topic_id,
+               tb_exam_user_topic.exam_user_id,
+               tb_exam_user_topic.exam_topic_id,
+               tb_exam_user_topic.answer,
+               tb_exam_user_topic.update_time,
+               tb_exam_user_topic.status as exam_user_topic_status,
+               tb_exam_user_topic.score  as exam_user_topic_score
+        from tb_exam_user
+                     left join tb_exam_user_topic on tb_exam_user.id = tb_exam_user_topic.exam_user_id
+        where tb_exam_user.id = #{examUserId}
+    </select>
+
+    <update id="updateUserExamStatus" parameterType="java.lang.String">
+        update tb_exam_user
+        set is_flag = 1
+        where id = #{examUserId}
+    </update>
+
+    <insert id="saveUserToExam" parameterType="com.fh.entity.app.UserToAnswer">
+        insert into tb_exam_user (id, exam_id, user_id, score, etc_score, right_topic, bad_topic, exam_count,
+                                  topic_count, created_time, type, retain, duration, status, is_flag, is_hash)
+        VALUES (#{id}, #{exam_id}, #{user_id}, #{score}, #{etc_score}, #{right_topic}, #{bad_topic}, #{exam_count},
+                #{topic_count}, #{created_time}, #{type}, #{retain}, #{duration}, #{status}, #{is_flag}, #{is_hash})
+    </insert>
+
+    <insert id="saveUserToExamAndTopic" parameterType="com.fh.entity.app.UserTopic">
+        insert into tb_exam_user_topic (id, exam_user_id, exam_topic_id, answer, update_time, status, score)
+        VALUES (#{id}, #{exam_user_id}, #{exam_topic_id}, #{answer}, #{update_time}, #{status}, #{score})
+    </insert>
+
+    <select id="examHeadTitle" parameterType="java.lang.String" resultType="pd">
+        SELECT tb_exam.id,
+               tb_exam.NAME as name,
+               tb_exam.start_time,
+               tb_exam.end_time,
+               tb_exam.long_time,
+               tb_exam.exam_count,
+               tb_exam.total_score,
+               tb_exam.qualified_score,
+               tb_exam.total_user,
+               tb_exam.finish_user,
+               tb_exam.unfinish_user,
+               tb_exam.created_time
+        FROM tb_exam
+        WHERE tb_exam.id = #{examId}
+    </select>
+
+    <select id="examDetailBody" parameterType="com.fh.entity.app.PageVo" resultType="pd">
+        SELECT id
+        FROM (
+                     SELECT tb_exam_user.id
+                     FROM tb_exam
+                                  LEFT JOIN tb_exam_user ON tb_exam.id = tb_exam_user.exam_id
+                     WHERE tb_exam.id = #{examId}
+                       AND tb_exam_user.STATUS &gt; 2
+                       AND tb_exam_user.user_id = #{uid}
+                     ORDER BY tb_exam_user.score DESC
+                     LIMIT 0, 1
+                     ) t
+        UNION
+        SELECT id
+        FROM (
+                     SELECT tb_exam_user.id
+                     FROM tb_exam
+                                  LEFT JOIN tb_exam_user ON tb_exam.id = tb_exam_user.exam_id
+                     WHERE tb_exam.id = #{examId}
+                       AND tb_exam_user.STATUS &lt;= 2
+                       AND tb_exam_user.user_id = #{uid}
+                     ) t
+    </select>
+
+    <select id="examDetailBodyLimit" parameterType="com.fh.entity.app.PageVo" resultType="pd">
+        SELECT sys_user.name,
+               tb_exam_user.exam_id,
+               tb_exam_user.user_id,
+               tb_exam_user.id,
+               tb_exam_user.score,
+               (CASE
+                       WHEN tb_exam_user.is_hash = 0 THEN '合格'
+                       WHEN tb_exam_user.is_hash = 1 THEN '不合格' END) AS is_hash,
+               tb_exam_user.bad_topic
+        FROM tb_exam_user
+                     LEFT JOIN sys_user ON tb_exam_user.user_id = sys_user.user_id
+                where 1 = 1
+                  and tb_exam_user.id in
+        <foreach collection="ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="search != null and search != ''">
+            and name like concat('%', #{search}, '%')
+        </if>
+        order by score desc
+    </select>
+
+    <select id="queryUserToExamCount" parameterType="com.fh.entity.app.PageVo" resultType="pd">
+        select MAX(tb_exam_history.sort) as sort
+        from tb_exam_history
+        where exam_id = #{examId}
+          and user_id = #{uid}
+    </select>
+
+    <select id="queryExamAvg" parameterType="java.lang.String" resultType="pd">
+        SELECT CAST(AVG(score) AS DECIMAL(10, 2)) AS score
+        FROM (SELECT max(tb_exam_user.score) AS score
+              FROM tb_exam_user
+              WHERE tb_exam_user.exam_id = #{examId}
+              GROUP BY tb_exam_user.user_id) t
+    </select>
+
+    <select id="queryUserSingleTime" parameterType="java.lang.String" resultType="pd">
+        select user_id, exam_id
+        from tb_exam_user
+        where id = #{examUserId}
+    </select>
+
+    <select id="exportResults" parameterType="com.fh.entity.app.PageVo" resultType="pd">
+        SELECT tb_exam.name,
+               tb_exam.start_time,
+               tb_exam.end_time,
+               tb_exam.categoryName,
+               tb_exam.qualified_score,
+               tb_exam.total_score,
+               sys_user.name                                         as username,
+               sys_user.stu_id,
+               tb_exam_user.exam_id,
+               tb_exam_user.user_id,
+               tb_exam_user.created_time,
+               tb_exam_user.id,
+               tb_exam_user.score,
+               (CASE
+                       WHEN tb_exam_user.is_hash = 0 THEN '合格'
+                       WHEN tb_exam_user.is_hash = 1 THEN '不合格' END) AS is_hash,
+               tb_exam_user.bad_topic
+        FROM (SELECT tb_exam.name,
+                     tb_exam.id,
+                     tb_exam.start_time,
+                     tb_exam.end_time,
+                     tb_exam.qualified_score,
+                     tb_exam.total_score,
+                     GROUP_CONCAT(tb_exam_category.NAME SEPARATOR ',') as categoryName
+              FROM tb_exam
+                           LEFT JOIN tb_exam_in_category ON tb_exam.id = tb_exam_in_category.exam_id
+                           LEFT JOIN tb_exam_category ON tb_exam_in_category.category_id = tb_exam_category.id) tb_exam
+                     LEFT JOIN tb_exam_user on tb_exam.id = tb_exam_user.exam_id
+                     LEFT JOIN sys_user ON tb_exam_user.user_id = sys_user.user_id
+                where 1 = 1
+                  and tb_exam_user.id in
+        <foreach collection="ids" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by score desc
+    </select>
+
+    <select id="queryUserToExamOffSet" parameterType="com.fh.entity.app.PageVo" resultType="java.lang.String">
+        select ifnull(GROUP_CONCAT(tb_exam_history.score SEPARATOR ','),0) as score
+        from tb_exam_history
+        where exam_id = #{examId}
+          and user_id = #{uid}
+    </select>
+
+    <update id="updateExamTime" parameterType="java.lang.String">
+        update tb_exam_user set created_time=now() where id = #{examUserId}
+    </update>
+</mapper>

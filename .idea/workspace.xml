@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="FHM:war exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="300e70da-01d3-4c7f-ae74-f63217abd5af" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/JavaProject.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FHM.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/fh/entity/app/UserToAnswer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/fh/entity/app/UserTopic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/fh/util/mail/da.tld" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/faces-config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/faces-configa.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/static/login/images/.idea/images.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Java-master/.idea/Java-master.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JiShengTestApp-Java/.idea/JiShengTestApp-Java.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../JiShengTestApp-Java/JiShengTestApp-Java.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/.idea/SpringAll-master.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/01.Start-Spring-Boot/Start-Spring-Boot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/02.Spring-Boot-Config/Spring-Boot-Config.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/03.Spring-Boot-MyBatis/Spring-Boot-MyBatis.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/04.Spring-Boot-JdbcTemplate/Spring-Boot-JdbcTemplate.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/05.Spring-Boot-MyBatis-MultiDataSource/Spring-Boot-MyBatis-MultiDataSource.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/06.Spring-Boot-JdbcTemplate-MultiDataSource/Spring-Boot-JdbcTemplate-MultiDataSource.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/07.Spring-Boot-AOP-Log/Spring-Boot-AOP-Log.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/08.Spring-Boot-Thymeleaf/Spring-Boot-Thymeleaf.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/09.Spring-Boot-Redis-Cache/Spring-Boot-Redis-Cache.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/10.Spring-Boot-Ehcache-Cache/Spring-Boot-Ehcache-Cache.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/11.Spring-Boot-Shiro-Authentication/Spring-Boot-Shiro-Authentication.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/12.Spring-Boot-Shiro-RememberMe/Spring-Boot-Shiro-RememberMe.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/13.Spring-Boot-Shiro-Authorization/Spring-Boot-Shiro-Authorization.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/14.Spring-Boot-Shiro-Redis/Spring-Boot-Shiro-Redis.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/15.Spring-Boot-Shiro-Ehcache/Spring-Boot-Shiro-Ehcache.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/16.Spring-Boot-Shiro-Thymeleaf-Tag/Spring-Boot-Shiro-Thymeleaf-Tag.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/17.Spring-Boot-Shiro-Session/demo (1) (com.springboot).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/18.Spring-Boot-Jackson/Spring-Boot-Jackson.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/19.Spring-Boot-Testing/Spring-Boot-Testing.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/20.Spring-Boot-Swagger2/Spring-Boot-Swagger2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/21.Spring-Boot-Actuator/Spring-Boot-Actuator.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/22.Spring-Boot-Email/Spring-Boot-Email.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/23.Spring-Boot-Admin/Spring Boot Admin Client/Spring-Boot-admin-Client.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/23.Spring-Boot-Admin/Spring Boot Admin Server/Spring-Boot-Admin-Server.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/24.Spring-Boot-Devtools/Spring-Boot-Devtools.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/25.Spring-Boot-Exception/Spring-Boot-Exception.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/26.Spring-Boot-Filter-Interceptor/Spring-Boot-Filter-Interceptor.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/27.Spring-Boot-Mapper-PageHelper/Spring-Boot-Mapper-PageHelper.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/28.Spring-Cloud-Eureka-Server-Discovery/Eureka-Client/Eureka-Client (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/28.Spring-Cloud-Eureka-Server-Discovery/Eureka-Service/Eureka-Service (5).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/28.Spring-Cloud-Eureka-Server-Discovery/Server-Consumer/Server-Consumer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/29.Spring-Cloud-Ribbon-LoadBalance/Eureka-Client/Eureka-Client (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/29.Spring-Cloud-Ribbon-LoadBalance/Eureka-Service/Eureka-Service (4).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/29.Spring-Cloud-Ribbon-LoadBalance/Ribbon-Consumer/Ribbon-Consumer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/30.Spring-Cloud-Hystrix-Circuit-Breaker/Eureka-Client/Eureka-Client (3).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/30.Spring-Cloud-Hystrix-Circuit-Breaker/Eureka-Service/Eureka-Service (6).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/30.Spring-Cloud-Hystrix-Circuit-Breaker/Ribbon-Consumer/Ribbon-Consumer (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/31.Spring-Cloud-Hystrix-Dashboard-Turbine/Eureka-Client/Eureka-Client (4).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/31.Spring-Cloud-Hystrix-Dashboard-Turbine/Eureka-Service/Eureka-Service (7).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/31.Spring-Cloud-Hystrix-Dashboard-Turbine/Hystrix-Dashboard/Hystrix-Dashboard.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/31.Spring-Cloud-Hystrix-Dashboard-Turbine/Ribbon-Consumer/Ribbon-Consumer (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/31.Spring-Cloud-Hystrix-Dashboard-Turbine/Turbine/Turbine.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/32.Spring-Cloud-Hystrix-Dashboard-Turbine-RabbitMQ/Eureka-Client/Eureka-Client (6).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/32.Spring-Cloud-Hystrix-Dashboard-Turbine-RabbitMQ/Eureka-Service/Eureka-Service (9).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/32.Spring-Cloud-Hystrix-Dashboard-Turbine-RabbitMQ/Hystrix-Dashboard/Hystrix-Dashboard (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/32.Spring-Cloud-Hystrix-Dashboard-Turbine-RabbitMQ/Ribbon-Consumer/Ribbon-Consumer (3).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/32.Spring-Cloud-Hystrix-Dashboard-Turbine-RabbitMQ/Turbine-Stream/Turbine-Stream.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/33.Spring-Cloud-Feign-Declarative-REST-Client/Eureka-Client/Eureka-Client (5).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/33.Spring-Cloud-Feign-Declarative-REST-Client/Eureka-Service/Eureka-Service (8).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/33.Spring-Cloud-Feign-Declarative-REST-Client/Feign-Consumer/Feign-Consumer (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/34.Start-Spring-Security/Security.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/35.Spring-Security-Authentication/Security (6).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/36.Spring-Security-ValidateCode/Security (5).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/37.Spring-Security-RememberMe/Security (3).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/38.Spring-Security-SmsCode/Security (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/39.Spring-Cloud-Zuul-Router/Eureka-Client/Eureka-Client.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/39.Spring-Cloud-Zuul-Router/Eureka-Service/Eureka-Service (3).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/39.Spring-Cloud-Zuul-Router/Feign-Consumer/Feign-Consumer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/39.Spring-Cloud-Zuul-Router/Zuul-Gateway/Zuul-Gateway.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/40.Spring-Boot-Dubbo-Zookeeper/common-api/common-api (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/40.Spring-Boot-Dubbo-Zookeeper/dubbo-boot (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/40.Spring-Boot-Dubbo-Zookeeper/server-consumer/server-consumer (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/40.Spring-Boot-Dubbo-Zookeeper/server-provider/server-provider (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/41.Spring-Cloud-Config/Eureka-Service/Eureka-Service (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/41.Spring-Cloud-Config/config-client/Config-Client (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/41.Spring-Cloud-Config/config-server/Config-Server (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/42.Spring-Cloud-Bus/Eureka-Service/Eureka-Service.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/42.Spring-Cloud-Bus/config-client/Config-Client.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/42.Spring-Cloud-Bus/config-server/Config-Server.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/43.Spring-Cloud-Sleuth/Eureka-Service/Eureka-Service (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/43.Spring-Cloud-Sleuth/Server-Provider1/Server-Provider1.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/43.Spring-Cloud-Sleuth/Server-Provider2/Server-Provider2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/43.Spring-Cloud-Sleuth/Zipkin-Server/Zipkin-Server.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/44.Spring-Boot-Autoconfiguration/autoconfig.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/45.Spring-Boot-SpringApplication/SpringApplication.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/46.Spring-Boot-Hibernate-Validator/validator.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/47.Spring-Boot-Content-Negotiation/demo (4).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/48.Spring-Boot-CORS-Support/demo (3).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/49.Spring-Boot-Async/demo.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/50.Spring-Regist-Bean/demo (1) (cc.mrbird).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/51.Spring-Bean-Lifecycle/demo (2) (cc.mrbird).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/52.Dubbo-OPS-Mointor/spring-boot-dubbo-applicaiton/common-api/common-api.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/52.Dubbo-OPS-Mointor/spring-boot-dubbo-applicaiton/dubbo-boot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/52.Dubbo-OPS-Mointor/spring-boot-dubbo-applicaiton/server-consumer/server-consumer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/52.Dubbo-OPS-Mointor/spring-boot-dubbo-applicaiton/server-provider/server-provider.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/53.Dubbo-High-Availability/common-api/common-api (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/53.Dubbo-High-Availability/dubbo-boot (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/53.Dubbo-High-Availability/server-consumer/server-consumer (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/53.Dubbo-High-Availability/server-provider/server-provider (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/54.Spring-Boot-Kafka/demo (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/55.Spring-Cloud-Consul/server-consumer/server-consumer (1) (com.example).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/55.Spring-Cloud-Consul/server-proivder/server-provider (1) (com.example).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/56.Spring-Boot-MongoDB-crud/mongodb.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/57.Spring-Boot-WebFlux/webflux/webflux.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/58.Spring-Boot-WebFlux-crud/webflux (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/59.Spring-Security-SessionManager/Security (7).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/60.Spring-Security-Logout/Security (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/61.Spring-security-Permission/Security (4).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/62.Spring-Boot-Shiro-JWT/demo (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/63.Spring-Security-OAuth2-Guide/security.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/64.Spring-Security-OAuth2-Customize/security (2).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/65.Spring-Security-OAuth2-Config/security (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/66.Spring-Security-OAuth2-SSO/sso-application-one/sso-application-one.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/66.Spring-Security-OAuth2-SSO/sso-application-two/sso-application-two.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/66.Spring-Security-OAuth2-SSO/sso-server/sso-server.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/66.Spring-Security-OAuth2-SSO/sso.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/67.spring-batch-start/spring-batch-start.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/68.spring-batch-itemreader/spring-batch-itemreader.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/69.spring-batch-itemwriter/spring-batch-itemwriter.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/70.spring-batch-itemprocessor/spring-batch-itemprocessor.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/71.spring-batch-listener/spring-batch-listener.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/72.spring-batch-exception/spring-batch-exception.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/73.spring-batch-launcher/spring-batch-launcher.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/74.spring-cloud-alibaba-nacos-register/consumer/consumer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/74.spring-cloud-alibaba-nacos-register/provider/provider.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/74.spring-cloud-alibaba-nacos-register/spring-cloud-alibaba-nacos-register.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/75.spring-cloud-alibaba-nacos-config/spring-cloud-alibaba-nacos-config.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/76.spring-boot-websocket-socketjs/spring-boot-websocket-socketjs.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/77.spring-cloud-alibaba-sentinel-dashboard-guide/spring-cloud-alibaba-sentinel-dashboard-guide.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/78.spring-cloud-alibaba-sentinelresource/consumer/consumer (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/78.spring-cloud-alibaba-sentinelresource/provider/provider (1).iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpringAll-master/78.spring-cloud-alibaba-sentinelresource/spring-cloud-alibaba-sentinelresource.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../StaticWebPro/StaticWebPro.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../deom/deom.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+        <option value="FxmlFile" />
+        <option value="Tag Library Descriptor" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="C:\Users\Administrator\.m2\repository" />
+        <option name="mavenHome" value="E:\setting\apache-maven-3.6.3" />
+        <option name="threads" value="1C" />
+        <option name="userSettingsFile" value="E:\setting\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="jdkForImporter" value="1.8" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="1.8" />
+  </component>
+  <component name="ProjectId" id="1payD65eoVskMxae2ysFjq3RFwQ" />
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>Class structureJava</id>
+          </State>
+          <State>
+            <id>Control flow issuesJava</id>
+          </State>
+          <State>
+            <id>Control flow issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Error handlingGroovy</id>
+          </State>
+          <State>
+            <id>Error handlingJava</id>
+          </State>
+          <State>
+            <id>Error handlingJavaScript</id>
+          </State>
+          <State>
+            <id>Groovy</id>
+          </State>
+          <State>
+            <id>InternationalizationJava</id>
+          </State>
+          <State>
+            <id>JSON and JSON5</id>
+          </State>
+          <State>
+            <id>Java</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+          <State>
+            <id>Potentially confusing code constructsGroovy</id>
+          </State>
+          <State>
+            <id>Spring</id>
+          </State>
+          <State>
+            <id>Spring CoreSpring</id>
+          </State>
+          <State>
+            <id>XML</id>
+          </State>
+          <State>
+            <id>XMLSpring CoreSpring</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Android</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="redshift&#10;mysql" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1600423286173" />
+    <property name="com.obroom.plugin.mybatislog.indexNum" value="7" />
+    <property name="com.obroom.plugin.mybatislog.running" value="0" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\JavaProject\FHMWEB\src\main\resources\spring" />
+      <recent name="C:\Users\Administrator\Desktop\JavaProject\FHMWEB\src\main\resources\mybatis\app" />
+      <recent name="C:\Users\Administrator\Desktop\JavaProject\FHMWEB\src\main\webapp\static\login\images" />
+      <recent name="C:\Users\Administrator\Desktop\JavaProject\FHMWEB\src\main\webapp\WEB-INF\jsp\system\admin" />
+      <recent name="C:\Users\Administrator\Desktop\JavaProject\FHMWEB\src\main\webapp\WEB-INF\jsp\system" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\JavaProject\FHMWEB\src\main\java\com\fh\config" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.fh.entity.app" />
+      <recent name="com.fh.util" />
+      <recent name="com.fh.controller.app" />
+    </key>
+  </component>
+  <component name="RestClientSettings">
+    <option name="REQUEST_HISTORY">
+      <list>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://localhost:8080/api/v1/addQuestionBank" />
+          <option name="urlPath" value="" />
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="name" />
+                <option name="value" value="王德发?uid=12321321321312?companyId=4ce24cb3a757401f8b856eff7b416983" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+      </list>
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="excludedTypes">
+      <set>
+        <option value="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" />
+        <option value="HttpClient.HttpRequestRunConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Tomcat Server.FHM">
+    <configuration name="savetext" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.threadtest.savetext" />
+      <module name="FHM" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.threadtest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="generated-requests#8" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="8" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="FHM" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.32" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="1.8">
+      <option name="OPEN_IN_BROWSER" value="false" />
+      <option name="BROWSER_ID" value="b2a9dca7-9d0b-4e1e-98a8-afb19c1328d2" />
+      <option name="COMMON_VM_ARGUMENTS" value="-Dfile.encoding=UTF-8" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="FHM:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Unnamed_FHM" />
+        <option name="HTTP_PORT" value="8080" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="55433" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="FHM:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.32" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="1.8">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/" />
+      <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <deployment>
+        <artifact name="FHM:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="_FHM" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="55432" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="FHM:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.savetext" />
+      <item itemvalue="HTTP Request.generated-requests#8" />
+      <item itemvalue="Tomcat Server.FHM" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.savetext" />
+        <item itemvalue="HTTP Request.generated-requests#8" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Tomcat Server" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Tomcat Server" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="Finished" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+            </expand>
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\Administrator\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="300e70da-01d3-4c7f-ae74-f63217abd5af" name="Default Changelist" comment="" />
+      <created>1600310740139</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600310740139</updated>
+      <workItem from="1600310743079" duration="2346000" />
+      <workItem from="1600313140297" duration="13492000" />
+      <workItem from="1600391224087" duration="21173000" />
+      <workItem from="1615435377390" duration="10761000" />
+      <workItem from="1615512583320" duration="9435000" />
+      <workItem from="1615540958474" duration="14000" />
+      <workItem from="1615770848262" duration="18241000" />
+      <workItem from="1615857465793" duration="20325000" />
+      <workItem from="1615944032511" duration="22343000" />
+      <workItem from="1616030702654" duration="5720000" />
+      <workItem from="1621244595948" duration="834000" />
+      <workItem from="1621245447917" duration="272000" />
+      <workItem from="1621301165409" duration="2815000" />
+      <workItem from="1621306641205" duration="972000" />
+      <workItem from="1621307637000" duration="775000" />
+      <workItem from="1621312965398" duration="11930000" />
+      <workItem from="1621387212665" duration="7231000" />
+      <workItem from="1621474192442" duration="5883000" />
+      <workItem from="1621499328974" duration="1091000" />
+      <workItem from="1621575602475" duration="5677000" />
+      <workItem from="1621820311376" duration="9973000" />
+      <workItem from="1621907474856" duration="66000" />
+      <workItem from="1621908266111" duration="192000" />
+      <workItem from="1622012161937" duration="1694000" />
+      <workItem from="1622089080519" duration="1729000" />
+      <workItem from="1622179865205" duration="3649000" />
+      <workItem from="1622186948736" duration="19000" />
+      <workItem from="1622688069186" duration="3406000" />
+      <workItem from="1622774241722" duration="17338000" />
+      <workItem from="1622799703480" duration="604000" />
+      <workItem from="1623029501096" duration="13300000" />
+      <workItem from="1623114528701" duration="15503000" />
+      <workItem from="1623138246221" duration="558000" />
+      <workItem from="1623139028158" duration="7006000" />
+      <workItem from="1623201410560" duration="7541000" />
+      <workItem from="1623209043016" duration="8825000" />
+      <workItem from="1623227147473" duration="7907000" />
+      <workItem from="1623287584223" duration="15804000" />
+      <workItem from="1623316220834" duration="932000" />
+      <workItem from="1623372961416" duration="6044000" />
+      <workItem from="1623403767394" duration="1669000" />
+      <workItem from="1623741857548" duration="3384000" />
+      <workItem from="1623745973103" duration="727000" />
+      <workItem from="1623748408835" duration="2299000" />
+      <workItem from="1623805675372" duration="10302000" />
+      <workItem from="1623892548591" duration="14311000" />
+      <workItem from="1623913870847" duration="10175000" />
+      <workItem from="1623978676157" duration="24583000" />
+      <workItem from="1624007094161" duration="2303000" />
+      <workItem from="1624009685680" duration="867000" />
+      <workItem from="1624237837183" duration="16905000" />
+      <workItem from="1624269864894" duration="2880000" />
+      <workItem from="1624324486852" duration="17961000" />
+      <workItem from="1624356474938" duration="515000" />
+      <workItem from="1624411356931" duration="17760000" />
+      <workItem from="1624436650747" duration="9723000" />
+      <workItem from="1624497311246" duration="20489000" />
+      <workItem from="1624525542815" duration="3160000" />
+      <workItem from="1624583822829" duration="18583000" />
+      <workItem from="1624843053906" duration="16379000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/system/head/HeadController.java</url>
+          <line>387</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/system/head/HeadController.java</url>
+          <line>405</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/system/head/HeadController.java</url>
+          <line>421</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/system/head/HeadController.java</url>
+          <line>393</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/util/Tools.java</url>
+          <line>154</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/system/head/HeadController.java</url>
+          <line>138</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="com.fh.entity.app.ExamVo" memberName="examType" />
+        <PinnedItemInfo parentTag="org.apache.catalina.connector.Request" memberName="userPrincipal" />
+        <PinnedItemInfo parentTag="com.fh.entity.app.ExamVo" memberName="examIds" />
+        <PinnedItemInfo parentTag="org.apache.catalina.connector.Request" memberName="postData" />
+        <PinnedItemInfo parentTag="com.fh.entity.app.examType" memberName="id" />
+        <PinnedItemInfo parentTag="org.apache.catalina.connector.Request" memberName="formats" />
+        <PinnedItemInfo parentTag="com.fh.entity.app.examType" memberName="examId" />
+        <PinnedItemInfo parentTag="org.apache.shiro.web.servlet.ShiroHttpServletRequest" memberName="httpSessions" />
+        <PinnedItemInfo parentTag="org.apache.shiro.web.servlet.ShiroHttpServletRequest" memberName="session" />
+        <PinnedItemInfo parentTag="org.apache.shiro.web.servlet.ShiroHttpServletRequest" memberName="servletContext" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/FHM$FHM.ic" NAME="FHM Coverage Results" MODIFIED="1624007668905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>
